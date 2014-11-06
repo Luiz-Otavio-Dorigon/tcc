@@ -3,7 +3,7 @@ global $CONEXAO;
 $CONEXAO->setSql("
     SELECT TAR.TAR_CODIGO, TAR.TAR_NOME, TAR.TAR_DATAINICIO, TAR.TAR_DESCRICAO
       FROM TAREFA TAR
-     WHERE TAR.TAR_CODIGO = ".get("tar_codigo")."");
+     WHERE TAR.TAR_CODIGO = " . get("tar_codigo") . "");
 
 foreach ($CONEXAO->dadoBanco() as $TAREFA) {
     $detalhesTarefa = '
@@ -12,76 +12,81 @@ foreach ($CONEXAO->dadoBanco() as $TAREFA) {
             <th colspan="6"> <h4 style="color: #3276b1" > Dados da tarefa <h4></th>
             <tr>
                 <td> <b> Nome da tarefa </b> </td>
-                <td> '.$TAREFA['TAR_NOME'].' </td>
+                <td> ' . $TAREFA['TAR_NOME'] . ' </td>
                 <td> <b> Código da tarefa </b> </td>
-                <td> '.$TAREFA['TAR_CODIGO'].' </td>
+                <td> ' . $TAREFA['TAR_CODIGO'] . ' </td>
                 <td> <b> Data de início da tarefa </b> </td> 
-                <td> '.fFormataData($TAREFA['TAR_DATAINICIO']).' </td>
+                <td> ' . fFormataData($TAREFA['TAR_DATAINICIO']) . ' </td>
             </tr>
             <tr>
                 <td> <b> Descrição da tarefa </b> </td>
-                <td colspan="5"> '.$TAREFA['TAR_DESCRICAO'].' </td>
+                <td colspan="5"> ' . $TAREFA['TAR_DESCRICAO'] . ' </td>
             </tr>';
-    
+
     $CONEXAO->setSql("SELECT COUNT(*) AS total
                         FROM TAREFA_PRODUTO 
-                       WHERE TAR_CODIGO = ".get("tar_codigo")."");
-    
+                       WHERE TAR_CODIGO = " . get("tar_codigo") . "");
+
     if ($CONEXAO->dadoBanco()[0]['total'] > 0) {
         $detalhesTarefa .= '<th colspan="6"> <h4 style="color: #3276b1" > Dados do(s) produto(s) <h4> </th>';
 
         $CONEXAO->setSql("
                 SELECT PRO.PRO_NOME, TAP.PRO_QUANTIDADE
                   FROM TAREFA_PRODUTO TAP, PRODUTO PRO
-                 WHERE TAP.TAR_CODIGO = ".get("tar_codigo")."
+                 WHERE TAP.TAR_CODIGO = " . get("tar_codigo") . "
                    AND TAP.PRO_CODIGO = PRO.PRO_CODIGO");
 
         foreach ($CONEXAO->dadoBanco() as $PRODUTOS) {
-        $detalhesTarefa .= '
+            $detalhesTarefa .= '
                 <tr>
                     <td> <b> Descrição do produto </b> </td>
-                    <td> '.$PRODUTOS['PRO_NOME'].' </td>
-                    <td> <b> Quantidade para produção </b> </td>
-                    <td> '.$PRODUTOS['PRO_QUANTIDADE'].' </td>
+                    <td> ' . $PRODUTOS['PRO_NOME'] . ' </td>
+                    <td> <b> Quantia para produção </b> </td>
+                    <td> ' . $PRODUTOS['PRO_QUANTIDADE'] . ' </td>
                     <td colspan="2"></td>
                 </tr>';
         }
-    } else {
+    }
+    $CONEXAO->setSql("SELECT COUNT(*) AS total
+                        FROM TAREFA_PECA 
+                       WHERE TAR_CODIGO = " . get("tar_codigo") . "");
+
+    if ($CONEXAO->dadoBanco()[0]['total'] > 0) {
         $detalhesTarefa .= '<th colspan="6"> <h4 style="color: #3276b1" > Dados da(s) peça(s) <h4></th>';
 
         $CONEXAO->setSql("
                 SELECT PEC.PEC_NOME, TAP.PEC_QUANTIDADE
                   FROM TAREFA_PECA TAP, PECA PEC
-                 WHERE TAP.TAR_CODIGO = ".get("tar_codigo")."
+                 WHERE TAP.TAR_CODIGO = " . get("tar_codigo") . "
                    AND TAP.PEC_CODIGO = PEC.PEC_CODIGO");
 
         foreach ($CONEXAO->dadoBanco() as $PECAS) {
-        $detalhesTarefa .= '
+            $detalhesTarefa .= '
                 <tr>
                     <td> <b> Descrição da peça </b> </td>
-                    <td> '.$PECAS['PEC_NOME'].' </td>
-                    <td> <b> Quantidade para produção </b> </td>
-                    <td> '.$PECAS['PEC_QUANTIDADE'].' </td>
+                    <td> ' . $PECAS['PEC_NOME'] . ' </td>
+                    <td> <b> Quantia para produção </b> </td>
+                    <td> ' . $PECAS['PEC_QUANTIDADE'] . ' </td>
                     <td colspan="2"></td>
                 </tr>';
         }
     }
     $detalhesTarefa .= '<th colspan="6"> <h4 style="color: #3276b1" > Integrantes da equipe <h4></th>';
-    
+
     $CONEXAO->setSql("
             SELECT USU.USU_NOME
               FROM TAREFA_USUARIO TAU, USUARIO USU
-             WHERE TAU.TAR_CODIGO = ".get("tar_codigo")."
+             WHERE TAU.TAR_CODIGO = " . get("tar_codigo") . "
                AND TAU.USU_CODIGO = USU.USU_CODIGO");
-    
+
     foreach ($CONEXAO->dadoBanco() as $USUARIOS) {
-    $detalhesTarefa .= '
+        $detalhesTarefa .= '
             <tr>
                 <td> <b> Nome do funcionário </b> </td>
-                <td colspan="5"> '.$USUARIOS['USU_NOME'].' </td>
+                <td colspan="5"> ' . $USUARIOS['USU_NOME'] . ' </td>
             </tr>';
     }
-    
+
     $detalhesTarefa .= '</table>';
     print_r($detalhesTarefa);
 }
@@ -93,29 +98,91 @@ $tag_selected = 'selected = ';
 $CONEXAO->setSql("
         SELECT SIT.SIT_CODIGO
           FROM TAREFA_SITUACAO STA, SITUACAO SIT
-         WHERE STA.TAR_CODIGO = ".get('tar_codigo')."
+         WHERE STA.TAR_CODIGO = " . get('tar_codigo') . "
            AND STA.SIT_CODIGO = SIT.SIT_CODIGO
-      GROUP BY STA.TAR_CODIGO ");
+      GROUP BY STA.STA_DATA DESC");
 
 $sitCodigo = $CONEXAO->dadoBanco()[0]['SIT_CODIGO'];
 
 $CONEXAO->setSql("SELECT * FROM SITUACAO");
 foreach ($CONEXAO->dadoBanco() as $SITUACAO) {
-    $option[] = sprintf($tag_option, $SITUACAO["SIT_CODIGO"], ($sitCodigo == $SITUACAO["SIT_CODIGO"]) ? $tag_selected.$sitCodigo : "" , $SITUACAO["SIT_NOME"]);
+    $option[] = sprintf($tag_option, $SITUACAO["SIT_CODIGO"], ($sitCodigo == $SITUACAO["SIT_CODIGO"]) ? $tag_selected . $sitCodigo : "", $SITUACAO["SIT_NOME"]);
 }
+?>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal1">Trocar Situação</button>
 
-echo '<h2>Alterar Situação da Terefa</h2><br />';
+<div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Alterar Situação da Terefa</h4>
+                </div>
+                <div class="modal-body">
+                    <?
+                    printf('
+                        <label>Situação atual da Tarefa</label>
+                        <select CLASS="form-control" name="SIT_CODIGO">%s</select> <br />
+                        <label>Observação</label>
+                        <textarea class="form-control" required name="STA_OBSERVACAO"></textarea> <br />                        
+                    ', implode('', $option));
+                    ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <input class="btn btn-primary" type="submit" name="acao_trocar" value="Salvar" />
+                    <?
+                    if ($_POST["acao_trocar"] == 'Salvar') {
+                        $CONEXAO->setSql("INSERT INTO  TAREFA_SITUACAO (TAR_CODIGO, SIT_CODIGO, USU_CODIGO, STA_OBSERVACAO) VALUES ( " . get('tar_codigo') . ", " . $_POST['SIT_CODIGO'] . ", " . $_SESSION['USUARIO']['USU_CODIGO'] . ", '" . $_POST['STA_OBSERVACAO'] . "')");
+                        $CONEXAO->dadoBanco();
+                    }
+                    ?>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
-printf('
-    <form method="post" action="?pg=tarefa_listar">
-        <label>Situação atual da Tarefa</label>
-        <select CLASS="form-control" name="SIT_CODIGO">%s</select> <br />
-        <label>Observação</label>
-        <textarea class="form-control" name="STA_OBSERVACAO"></textarea> <br />
-        <input class="btn btn-primary" type="submit" name="acao_trocar" value="Trocar" />
-    </form>
-', implode('', $option));
-
-if ($_POST["acao_trocar"] == 'Trocar') {
-    echo 'Fazer o insert aqui';
-}
+<button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal2">Listar Situações</button>
+<div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Listagem de Situações da Terefa</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <th> Situação </th>
+                        <th> Data </th>
+                        <th> Usuário Modificação </th>
+                        <th> Observação </th>
+                        <?
+                        $CONEXAO->setSql("
+                            SELECT USU.USU_NOME, SIT.SIT_NOME, STA.STA_DATA, STA.STA_OBSERVACAO
+                             FROM SITUACAO SIT, TAREFA_SITUACAO STA, USUARIO USU
+                            WHERE STA.TAR_CODIGO = ".  get("tar_codigo")."
+                              AND STA.SIT_CODIGO = SIT.SIT_CODIGO
+                              AND STA.USU_CODIGO = USU.USU_CODIGO");
+                        foreach ($CONEXAO->dadoBanco() as $TAREFA_SITUACAO) {
+                            print_r('
+                                <tr>
+                                    <td>' . $TAREFA_SITUACAO['SIT_NOME'] . '</td>
+                                    <td>' . fFormataData($TAREFA_SITUACAO['STA_DATA']) . '</td>
+                                    <td>' . $TAREFA_SITUACAO['USU_NOME'] . '</td>
+                                    <td>' . $TAREFA_SITUACAO['STA_OBSERVACAO'] . '</td>
+                                </tr>
+                                ');
+                        }
+                        ?>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

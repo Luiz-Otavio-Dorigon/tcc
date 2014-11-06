@@ -41,8 +41,7 @@ class Usuario extends Crud {
         $this->this->setApelido('EMP',"EMP_NOME");
         
         $this->setCampo("PER_CODIGO", "Perfil", 20, "combo", true, true);
-        $this->setOption(2, "Administrador");
-        $this->setOption(3, "Funcionário");
+        $this->setCombo("PERFIL");
     }
 
 }

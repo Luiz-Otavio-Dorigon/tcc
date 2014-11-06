@@ -143,6 +143,16 @@ class Auxiliar {
             echo '</table><hr>';
         }
         
+        if (get('pg') == "tarefa_listar") {
+            $checkbpx = '
+                <form method="post">
+                    <input type="checkbox" name="canceladas" value="= 5" /> Canceladas
+                    <input type="checkbox" name="concluidas" value="= 4" /> Concluídas 
+                    <input type="submit" class="btn btn-primary btn-xs" name="listar" value="Buscar"/>
+                    <br /><br />
+                </form>';
+            echo $checkbpx;
+        }
         $tag_listagem = '<table id="example" class="table table-striped">
                 <thead>
                     <tr>%s
