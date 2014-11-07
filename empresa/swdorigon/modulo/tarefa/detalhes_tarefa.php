@@ -113,11 +113,6 @@ foreach ($CONEXAO->dadoBanco() as $SITUACAO) {
     $option[] = sprintf($tag_option, $SITUACAO["SIT_CODIGO"], ($sitCodigo == $SITUACAO["SIT_CODIGO"]) ? $tag_selected . $sitCodigo : "", $SITUACAO["SIT_NOME"]);
 }
 ?>
-<script>
-    function atualiza() {
-        location.reload();
-    }
-</script>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal1" <?=$tagDisabled?>>Trocar Situação</button>
 
 <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -154,6 +149,7 @@ foreach ($CONEXAO->dadoBanco() as $SITUACAO) {
 </div>
 
 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal2">Listar Situações</button>
+
 <div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -190,7 +186,7 @@ foreach ($CONEXAO->dadoBanco() as $SITUACAO) {
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                 </div>
             </form>
         </div>
