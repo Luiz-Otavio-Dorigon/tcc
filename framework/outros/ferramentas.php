@@ -95,7 +95,11 @@ function fIn($string) {
 }
 
 function fAdministrador() {
-    return $_SESSION["USUARIO"]["PER_CODIGO"] == 2;
+    if (get("pg") == "usuario_novo" && get("acao") == "alterar" && $_SESSION["USUARIO"]["PER_CODIGO"] == 3) {
+        return $_SESSION["USUARIO"]["PER_CODIGO"] == 3;
+    } else {
+        return $_SESSION["USUARIO"]["PER_CODIGO"] == 2;
+    }
 }
 
 //Outros =======================================================================

@@ -18,6 +18,4 @@ class Cidade extends Crud {
         $this->setCombo("ESTADO");
         $this->this->setApelido('EST',"EST_NOME");
     }
-
 }
-?>

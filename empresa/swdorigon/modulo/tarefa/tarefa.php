@@ -3,22 +3,30 @@
 class Tarefa extends Crud {
 
     function __construct() {
+        
         $this->sqlConsulta = "
                 SELECT  TAR.*, 
+                            group_concat(STA.SIT_CODIGO ORDER BY STA.SIT_CODIGO DESC) as TESTE,
             substring_index(group_concat(SIT.SIT_NOME ORDER BY STA.STA_DATA DESC), ',', 1) AS `SIT_CODIGO[]`
                   FROM TAREFA TAR, TAREFA_SITUACAO STA, SITUACAO SIT";
         
-             $this->sqlCondicao = "
+            $this->sqlCondicao = "
                  WHERE TAR.TAR_CODIGO = STA.TAR_CODIGO
                    AND STA.SIT_CODIGO = SIT.SIT_CODIGO
-                   AND TAR.TAR_ATIVO = 'S' ";
+                   AND TAR.TAR_ATIVO = IF ('" . get('pg') . "' = 'tarefa_lixeira', 'N','S')";
              
-        if ($_SESSION['USUARIO']['PER_CODIGO'] == 3) {
             $this->sqlCondicao .= sprintf("
                     AND TAR.TAR_DATAINICIO <= NOW()
                     AND TAR.TAR_CODIGO IN (SELECT TAR_CODIGO FROM TAREFA_USUARIO WHERE USU_CODIGO = %s)", $_SESSION['USUARIO']['USU_CODIGO']);
+
+        $sqlTarefa = "
+            GROUP BY TAR.TAR_CODIGO 
+              HAVING TESTE %s";
+        if (!empty($_POST['listar'])) {
+            $this->sqlOrdem = sprintf($sqlTarefa, fCoalesce($_POST['opcao-tarefa'],"< 4"));
+        } else {
+            $this->sqlOrdem = sprintf($sqlTarefa, "< 4");
         }
-        $this->sqlOrdem = "GROUP BY TAR.TAR_CODIGO ";
         parent::__construct();
     }
     
@@ -57,14 +65,10 @@ class Tarefa extends Crud {
         $this->setCombo("USUARIO");
         $this->setMulti("TAREFA_USUARIO");
         
-        $this->setCampo("SIT_CODIGO[]", "Situação", 100, "combo", true, false);
-        $this->setCombo("SITUACAO");
-        $this->setMulti("TAREFA_SITUACAO");
-        
-        
+        if (get("pg") == "tarefa_listar") {
+            $this->setCampo("SIT_CODIGO[]", "Situação", 100, "combo", true, false);
+            $this->setCombo("SITUACAO");
+            $this->setMulti("TAREFA_SITUACAO");
+        }
     }
-    
-    
-
 }
-?>

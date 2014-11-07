@@ -143,6 +143,16 @@ class Auxiliar {
             echo '</table><hr>';
         }
         
+        if (get('pg') == "tarefa_listar") {
+            $checkbpx = '
+                <form method="post">
+                    <input type="radio" name="opcao-tarefa" value="= 5" /> Canceladas
+                    <input type="radio" name="opcao-tarefa" value="= 4" /> Concluídas 
+                    <input type="submit" class="btn btn-primary btn-xs" name="listar" value="Buscar"/>
+                    <br /><br />
+                </form>';
+            echo $checkbpx;
+        }
         $tag_listagem = '<table id="example" class="table table-striped">
                 <thead>
                     <tr>%s
@@ -214,7 +224,7 @@ class Auxiliar {
             
             $condicao = $this->consulta("ABA", "PAG_CODIGO = (SELECT PAG_CODIGO FROM PAGINA WHERE PAG_NOME = '" . get("pg") . "' AND MOD_CODIGO = '$mod_codigo')")[0];
             $aba_codigo = $condicao['ABA_CODIGO'];
-            
+
             $sql_acao = "
                 SELECT DISTINCT 
                        AB.ABC_NOME,
@@ -242,19 +252,15 @@ class Auxiliar {
                                  </div>
                              </td>';
 
-
                 $tag_botao = '';
                 foreach ($acao as $ACAO) {
-                    if($ACAO[ACA_NOME]=="imprimir")
-                        $target = "_blank";
                     $action = fSimNao($ACAO[ACA_ACTION],get("pg"),$this->modulo."_".$ACAO[ABC_NOME]);
-                    $tag_botao .= "
+                        $tag_botao .= "
                         <li>
-                            <a class='btn' href='?pg=$action&".strtolower($this->chave)."={$REGISTRO[$this->chave]}&acao=$ACAO[ACA_NOME]' target='".$target."'>
+                            <a class='btn' href='?pg=$action&".strtolower($this->chave)."={$REGISTRO[$this->chave]}&acao=$ACAO[ACA_NOME]''>
                                 <span {$ACAO[ACA_ATRIBUTO]}> <span style='color: black; font-family: arial;'>$ACAO[ACA_DESCRICAO]</span></span>
                             </a>
                         </li>";
-                    $target="";
                 }
                 $tag_acao = sprintf($tag_acao, $tag_botao);
             }
@@ -285,6 +291,11 @@ class Auxiliar {
         //Inserir Padrão
         if (fPostGet("acao") == "Incluir") {
             $this->mensagem($this->inserir(strtoupper($this->modulo), $this->getCampoValorArray(), true));
+            if ($this->modulo == "tarefa") {
+                $this->setSql("SELECT TAR.TAR_CODIGO FROM TAREFA TAR ORDER BY TAR.TAR_CODIGO DESC LIMIT 1");
+                $this->setSql("INSERT INTO TAREFA_SITUACAO (TAR_CODIGO, SIT_CODIGO, USU_CODIGO) VALUES (".$this->consulta()[0][TAR_CODIGO].", 1, ".$_SESSION[USUARIO][USU_CODIGO].")");
+                $this->consulta();
+            }
         }
 
         //Excluir ou Restaurar Padrão
@@ -462,7 +473,9 @@ class Auxiliar {
 
     public function inserir($tabela, $dados, $gravaCodigoPrincipal = false) {
         global $CONEXAO;
-        return $CONEXAO->inserir($tabela, $dados, $gravaCodigoPrincipal);
+        if ($tabela != "TAREFA_SITUACAO") {
+            return $CONEXAO->inserir($tabela, $dados, $gravaCodigoPrincipal);
+        }
     }
 
     public function atualizar($tabela, $dados, $condicao, $multi = '') {
@@ -472,7 +485,9 @@ class Auxiliar {
 
     public function excluir($tabela, $condicao) {
         global $CONEXAO;
-        return $CONEXAO->excluir($tabela, $condicao);
+        if ($tabela != "TAREFA_SITUACAO") {
+            return $CONEXAO->excluir($tabela, $condicao);
+        }
     }
     
     function iniciarCampos() {}

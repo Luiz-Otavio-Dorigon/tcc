@@ -1,5 +1,5 @@
 <link href="framework/lib/bootstrap/3.0.3/css/signin.css" rel="stylesheet">
-<?php
+<?
 if (fVazio(get("empresa"))) {
     ?>
     <div>
@@ -8,16 +8,11 @@ if (fVazio(get("empresa"))) {
             <th>Selecione sua empresa</th>
             <tr>
                 <td>
-                    <a href="?empresa=testeswdorigon">SWDorigon</a>
-                </td>
-            </tr>
-             <tr>
-                <td>
-                    <a href="?empresa=dlmweb">DLMWeb</a>
+                    <a href="?empresa=swdorigon">SWDorigon</a>
                 </td>
             </tr>
         </table>
     </div>
-    <?php
+    <?
     exit();
 }
