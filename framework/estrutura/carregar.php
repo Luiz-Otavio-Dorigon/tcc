@@ -1,7 +1,5 @@
 <?php
-
 require_once $DIR.'/framework/carregar.php';
-
 if ($_SERVER["HTTP_HOST"] == 'localhost') {
     if (fVazio($_SESSION["EMPRESA"]["CAMINHO"])) {
         $_SESSION["EMPRESA"]["CAMINHO"] = strtoupper(get('empresa'));

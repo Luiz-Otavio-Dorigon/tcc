@@ -17,7 +17,7 @@ class Conexao extends LibBd {
         if (get("acao") == "desconectar") {
             $this->desconectar();
             session_destroy();
-            header("Location: redireciona.php");
+            header("Location: index.php");
         }
     }
     

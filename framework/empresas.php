@@ -8,7 +8,7 @@ if (fVazio(get("empresa"))) {
             <th>Selecione sua empresa</th>
             <tr>
                 <td>
-                    <a href="?empresa=swdorigon">SWDorigon</a>
+                    <a href="?empresa=tcc">SWDorigon</a>
                 </td>
             </tr>
         </table>
