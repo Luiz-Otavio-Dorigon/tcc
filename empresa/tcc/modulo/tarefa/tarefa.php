@@ -23,9 +23,9 @@ class Tarefa extends Crud {
             GROUP BY TAR.TAR_CODIGO 
               HAVING TESTE %s";
         if (!empty($_POST['listar'])) {
-            $this->sqlOrdem = sprintf($sqlTarefa, fCoalesce($_POST['opcao-tarefa'],"< 4"));
+            $this->sqlOrdem = sprintf($sqlTarefa, fCoalesce($_POST['opcao-tarefa'],"< 5"));
         } else {
-            $this->sqlOrdem = sprintf($sqlTarefa, "< 4");
+            $this->sqlOrdem = sprintf($sqlTarefa, "< 5");
         }
         parent::__construct();
     }

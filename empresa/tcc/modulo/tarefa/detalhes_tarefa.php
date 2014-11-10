@@ -104,7 +104,7 @@ $CONEXAO->setSql("
 
 $sitCodigo = $CONEXAO->dadoBanco()[0]['SIT_CODIGO'];
 
-if ($sitCodigo == 4 || $sitCodigo == 5) {
+if ($sitCodigo == 5 || $sitCodigo == 6) {
     $tagDisabled = "disabled";
 }
 
@@ -140,6 +140,10 @@ foreach ($CONEXAO->dadoBanco() as $SITUACAO) {
                     if ($_POST["acao_trocar"] == 'Salvar') {
                         $CONEXAO->setSql("INSERT INTO  TAREFA_SITUACAO (TAR_CODIGO, SIT_CODIGO, USU_CODIGO, STA_OBSERVACAO) VALUES ( " . get('tar_codigo') . ", " . $_POST['SIT_CODIGO'] . ", " . $_SESSION['USUARIO']['USU_CODIGO'] . ", '" . $_POST['STA_OBSERVACAO'] . "')");
                         $CONEXAO->dadoBanco();
+                        if ($_POST['SIT_CODIGO'] == 5 || $_POST['SIT_CODIGO'] == 6) {
+                            $CONEXAO->setSql("UPDATE TAREFA SET TAR_FINALIZADA = 'S' WHERE TAR_CODIGO = ".get('tar_codigo')."");
+                            $CONEXAO->dadoBanco();
+                        }
                     }
                     ?>
                 </div>
@@ -173,20 +177,20 @@ foreach ($CONEXAO->dadoBanco() as $SITUACAO) {
                               AND STA.USU_CODIGO = USU.USU_CODIGO
                          ORDER BY STA.STA_DATA");
                         foreach ($CONEXAO->dadoBanco() as $TAREFA_SITUACAO) {
-                            print_r('
+                            echo'
                                 <tr>
                                     <td>' . $TAREFA_SITUACAO['SIT_NOME'] . '</td>
                                     <td>' . fFormataData($TAREFA_SITUACAO['STA_DATA']) . '</td>
                                     <td>' . $TAREFA_SITUACAO['USU_NOME'] . '</td>
                                     <td>' . $TAREFA_SITUACAO['STA_OBSERVACAO'] . '</td>
                                 </tr>
-                                ');
+                                ';
                         }
                         ?>
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
                 </div>
             </form>
         </div>

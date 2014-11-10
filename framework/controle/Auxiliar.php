@@ -146,8 +146,8 @@ class Auxiliar {
         if (get('pg') == "tarefa_listar") {
             $checkbpx = '
                 <form method="post">
-                    <input type="radio" name="opcao-tarefa" value="= 5" /> Canceladas
-                    <input type="radio" name="opcao-tarefa" value="= 4" /> Concluídas 
+                    <input type="radio" name="opcao-tarefa" value="= 6" /> Canceladas
+                    <input type="radio" name="opcao-tarefa" value="= 5" /> Concluídas 
                     <input type="submit" class="btn btn-primary btn-xs" name="listar" value="Buscar"/>
                     <br /><br />
                 </form>';
@@ -241,16 +241,20 @@ class Auxiliar {
             $this->setSql(sprintf($sql_acao, fSimNao(fAdministrador(), "", "AND AB.PER_CODIGO = 3")));
             $tag_acao = '<td></td>';
             if ($acao = $this->consulta()) {
+                if ($_POST['listar'] && !empty($_POST['opcao-tarefa'])) {
+                    unset($acao[0]);
+                    unset($acao[1]);
+                }
                 $tag_acao = '<td class="text-right">
-                                 <div class="btn-group">
-                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                         <span class="glyphicon glyphicon-align-justify"></span> <span class="caret"></span>
-                                     </button>
-                                     <ul class="dropdown-menu" role="menu">
-                                         %s 
-                                     </ul>
-                                 </div>
-                             </td>';
+                             <div class="btn-group">
+                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                     <span class="glyphicon glyphicon-align-justify"></span> <span class="caret"></span>
+                                 </button>
+                                 <ul class="dropdown-menu" role="menu">
+                                     %s 
+                                 </ul>
+                             </div>
+                         </td>';
 
                 $tag_botao = '';
                 foreach ($acao as $ACAO) {
