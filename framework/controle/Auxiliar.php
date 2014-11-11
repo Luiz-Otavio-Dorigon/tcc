@@ -146,10 +146,21 @@ class Auxiliar {
         if (get('pg') == "tarefa_listar") {
             $checkbpx = '
                 <form method="post">
-                    <input type="radio" name="opcao-tarefa" value="= 6" /> Canceladas
-                    <input type="radio" name="opcao-tarefa" value="= 5" /> Concluídas 
-                    <input type="submit" class="btn btn-primary btn-xs" name="listar" value="Buscar"/>
-                    <br /><br />
+                    <table>
+                        <tr>
+                            <td>
+                                <select class="form-control" name="opcao-tarefa">
+                                    <option value="">Todas</option>
+                                    <option value="= 6">Canceladas</option>
+                                    <option value="= 5">Concluídas</option>
+                                </select>
+                            </td>
+                            <td> 
+                                <input type="submit" class="btn btn-primary" name="listar" value="Listar"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
                 </form>';
             echo $checkbpx;
         }
