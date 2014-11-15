@@ -56,7 +56,7 @@ foreach ($CONEXAO->dadoBanco() as $TAREFA) {
 
         $CONEXAO->setSql("
                 SELECT PEC.PEC_NOME, TAP.PEC_QUANTIDADE
-                  FROM TAREFA_PECA TAP, PECA PEC
+                  FROM TAREFA_PECA TAP, ITEM PEC
                  WHERE TAP.TAR_CODIGO = " . get("tar_codigo") . "
                    AND TAP.PEC_CODIGO = PEC.PEC_CODIGO");
 

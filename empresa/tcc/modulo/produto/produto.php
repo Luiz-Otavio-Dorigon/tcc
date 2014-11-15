@@ -8,7 +8,7 @@ class Produto extends Crud {
 
         //Acrescenta valor na tabela PRODUTO_PECA
         foreach ($_POST["PEC_CODIGO"] as $codigo) {
-            $sql = sprintf("UPDATE PRODUTO_PECA SET PEC_VALORUNITARIO = (SELECT PEC_VALOR FROM PECA WHERE PEC_CODIGO = %s)
+            $sql = sprintf("UPDATE PRODUTO_PECA SET PEC_VALORUNITARIO = (SELECT PEC_VALOR FROM ITEM WHERE PEC_CODIGO = %s)
                              WHERE PEC_CODIGO = %s AND PRO_CODIGO = %s", $codigo, $codigo, fCoalesce($this->chaveValor, $this->getValorChave()));
             $CONEXAO->query($sql);
         }
@@ -31,8 +31,8 @@ class Produto extends Crud {
     public function iniciarCampos() {
         $this->setAtrForm("enctype='multipart/form-data'");
 
-        $this->setCampo("PEC_CODIGO[]", "Peça", 100, "combo");
-        $this->setCombo("PECA", "PEC_VALOR");
+        $this->setCampo("PEC_CODIGO[]", "Item", 100, "combo");
+        $this->setCombo("ITEM", "PEC_VALOR");
         $this->setMulti("PRODUTO_PECA");
 
         $PEC_QUANTIDADE = new Campo("PEC_QUANTIDADE[]", "Quantidade", 100, "valor", false);

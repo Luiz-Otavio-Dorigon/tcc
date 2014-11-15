@@ -47,8 +47,8 @@ class Tarefa extends Crud {
         $this->setCampo("TAR_DATAINICIO", "Data de início", 100, "data", true, true);
         $this->this->setValor(date("Y-m-d"));
         
-        $this->setCampo("PEC_CODIGO[]", "Peça", 100, "combo", false, false);
-        $this->setCombo("PECA");
+        $this->setCampo("PEC_CODIGO[]", "Item", 100, "combo", false, false);
+        $this->setCombo("ITEM");
         $this->setMulti("TAREFA_PECA");
         
         $PEC_QUANTIDADE = new Campo("PEC_QUANTIDADE[]", "Quantidade", 100, "valor");
