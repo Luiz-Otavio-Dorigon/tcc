@@ -7,6 +7,8 @@
 -- Versão do servidor: 5.5.40-0ubuntu0.14.04.1
 -- versão do PHP: 5.5.9-1ubuntu4.5
 
+CREATE DATABASE IF NOT EXISTS TCC;
+USE TCC;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
@@ -19,6 +21,269 @@ SET time_zone = "+00:00";
 --
 -- Base de Dados: `TCC`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `PERFIL`
+--
+
+CREATE TABLE IF NOT EXISTS `PERFIL` (
+  `PER_CODIGO` bigint(20) NOT NULL AUTO_INCREMENT,
+  `PER_NOME` varchar(50) NOT NULL,
+  `PER_ATIVO` char(1) NOT NULL DEFAULT 'S',
+  PRIMARY KEY (`PER_CODIGO`),
+  KEY `PER_ATIVO` (`PER_ATIVO`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- Extraindo dados da tabela `PERFIL`
+--
+
+INSERT INTO `PERFIL` (`PER_CODIGO`, `PER_NOME`, `PER_ATIVO`) VALUES
+(2, 'Administrador', 'S'),
+(3, 'FuncionÃ¡rio', 'S');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `ACAO`
+--
+
+CREATE TABLE IF NOT EXISTS `ACAO` (
+  `ACA_CODIGO` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ACA_NOME` varchar(20) NOT NULL,
+  `ACA_OK` varchar(20) NOT NULL,
+  `ACA_DESCRICAO` varchar(20) NOT NULL,
+  `ACA_ATRIBUTO` varchar(500) DEFAULT NULL,
+  `ACA_ACTION` varchar(50) DEFAULT NULL,
+  `ACA_ATIVO` char(1) NOT NULL DEFAULT 'S',
+  PRIMARY KEY (`ACA_CODIGO`),
+  KEY `ACA_ATIVO` (`ACA_ATIVO`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+
+--
+-- Extraindo dados da tabela `ACAO`
+--
+
+INSERT INTO `ACAO` (`ACA_CODIGO`, `ACA_NOME`, `ACA_OK`, `ACA_DESCRICAO`, `ACA_ATRIBUTO`, `ACA_ACTION`, `ACA_ATIVO`) VALUES
+(1, 'alterar', 'alterado', 'Alterar', 'title=''Clique aqui para alterar ''class=''glyphicon glyphicon-pencil'' style=''color: orange''', NULL, 'S'),
+(2, 'excluir', 'excluido', 'Excluir', 'title=''Clique aqui para excluir ''class=''glyphicon glyphicon-remove'' style=''color: red''', NULL, 'S'),
+(3, 'incluir', 'incluido', 'Incluir', '', NULL, 'S'),
+(4, 'listar', 'listado', 'Listar', '', NULL, 'S'),
+(5, 'restaurar', 'restaurado', 'Restaurar', 'title=''Clique aqui para restaurar ''class=''glyphicon glyphicon-share-alt'' style=''color: silver''', NULL, 'S'),
+(6, 'imprimir', 'impresso', 'Imprimir', 'title=''Clique aqui para imprimir'' class=''glyphicon glyphicon-print'' style=''color: silver''', NULL, 'S'),
+(7, 'trocar', 'trocada', 'Trocar Sit.', 'title=''Trocar Situação'' class=''glyphicon glyphicon-refresh'' style=''color: blue''', '#', 'S'),
+(8, 'detalhar_tarefa', 'detalhada', 'Detalhar', 'title=''Detalhar Tarefa'' class=''glyphicon glyphicon-list''', NULL, 'S');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `MENU`
+--
+
+CREATE TABLE IF NOT EXISTS `MENU` (
+  `MEN_CODIGO` bigint(20) NOT NULL AUTO_INCREMENT,
+  `MEN_NOME` varchar(50) NOT NULL,
+  `MEN_ORDEM` smallint(6) NOT NULL,
+  `MEN_ATIVO` char(1) NOT NULL DEFAULT 'S',
+  PRIMARY KEY (`MEN_CODIGO`),
+  KEY `MEN_ATIVO` (`MEN_ATIVO`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+
+--
+-- Extraindo dados da tabela `MENU`
+--
+
+INSERT INTO `MENU` (`MEN_CODIGO`, `MEN_NOME`, `MEN_ORDEM`, `MEN_ATIVO`) VALUES
+(1, 'Cadastros', 2, 'S'),
+(2, 'Globais', 1, 'S'),
+(3, 'Tarefa', 3, 'S'),
+(4, 'ManutenÃ§Ã£o', 5, 'N'),
+(5, 'Suporte', 0, 'N'),
+(6, 'Pedido', 4, 'N'),
+(8, 'NULL', 0, 'S');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `MODULO`
+--
+
+CREATE TABLE IF NOT EXISTS `MODULO` (
+  `MOD_CODIGO` bigint(20) NOT NULL AUTO_INCREMENT,
+  `MOD_NOME` varchar(20) NOT NULL,
+  `MOD_DESCRICAO` varchar(20) NOT NULL,
+  `MOD_GENERO` char(1) NOT NULL,
+  `MOD_ATIVO` char(1) NOT NULL DEFAULT 'S',
+  `MOD_APELIDO` char(3) NOT NULL,
+  PRIMARY KEY (`MOD_CODIGO`),
+  UNIQUE KEY `MOD_APELIDO` (`MOD_APELIDO`) USING BTREE,
+  KEY `MOD_ATIVO` (`MOD_ATIVO`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
+
+--
+-- Extraindo dados da tabela `MODULO`
+--
+
+INSERT INTO `MODULO` (`MOD_CODIGO`, `MOD_NOME`, `MOD_DESCRICAO`, `MOD_GENERO`, `MOD_ATIVO`, `MOD_APELIDO`) VALUES
+(1, 'aba', 'Aba', 'F', 'S', 'ABA'),
+(2, 'abcabaacao', 'Aba AÃ§Ã£o', 'F', 'S', 'ABC'),
+(3, 'funcionario', 'FuncionÃ¡rio', 'M', 'N', 'FUN'),
+(4, 'modulo', 'MÃ³dulo', 'M', 'S', 'MOD'),
+(5, 'item', 'Item', 'M', 'S', 'ITE'),
+(6, 'produto', 'Produto', 'M', 'S', 'PRO'),
+(7, 'suporte', 'Suporte', 'M', 'S', 'SUP'),
+(8, 'tarefa', 'Tarefa', 'F', 'S', 'TAR'),
+(9, 'usuario', 'UsuÃ¡rio', 'M', 'S', 'USU'),
+(10, 'acao', 'AÃ§Ã£o', 'F', 'S', 'ACA'),
+(11, 'categoria', 'Categoria', 'F', 'N', 'CAT'),
+(12, 'empresa', 'Empresa', 'F', 'S', 'EMP'),
+(13, 'pedido', 'Pedido', 'M', 'S', 'PED'),
+(14, 'unidade', 'Unidade', 'F', 'S', 'UNI'),
+(15, 'cidade', 'Cidade', 'F', 'S', 'CID'),
+(16, 'menu', 'Menu', 'M', 'S', 'MEN'),
+(17, 'submenu', 'Submenu', 'M', 'S', 'SUB'),
+(18, 'pagina', 'PÃ¡gina', 'F', 'S', 'PAG'),
+(19, 'historico', 'HistÃ³rico', 'M', 'S', 'HIS'),
+(20, 'situacao', 'SituaÃ§Ã£o', 'F', 'S', 'SIT'),
+(21, 'perfil', 'Perfil', 'M', 'S', 'PER'),
+(22, 'estado', 'Estado', 'M', 'S', 'EST');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `SUBMENU`
+--
+
+CREATE TABLE IF NOT EXISTS `SUBMENU` (
+  `SUB_CODIGO` bigint(20) NOT NULL AUTO_INCREMENT,
+  `MEN_CODIGO` bigint(20) NOT NULL,
+  `SUB_NOME` varchar(50) DEFAULT NULL,
+  `SUB_ORDEM` smallint(6) NOT NULL,
+  `SUB_ATIVO` char(1) NOT NULL DEFAULT 'S',
+  PRIMARY KEY (`SUB_CODIGO`),
+  KEY `SUB_ATIVO` (`SUB_ATIVO`) USING BTREE,
+  KEY `MENU_SUBMENU_FK` (`MEN_CODIGO`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
+
+--
+-- Extraindo dados da tabela `SUBMENU`
+--
+
+INSERT INTO `SUBMENU` (`SUB_CODIGO`, `MEN_CODIGO`, `SUB_NOME`, `SUB_ORDEM`, `SUB_ATIVO`) VALUES
+(1, 1, 'Produto', 1, 'S'),
+(2, 1, 'Item', 2, 'S'),
+(3, 2, 'FuncionÃ¡rio', 2, 'N'),
+(4, 2, 'UsuÃ¡rio', 3, 'S'),
+(7, 4, 'Aba', 4, 'S'),
+(8, 4, 'Aba AÃ§Ã£o', 5, 'S'),
+(9, 4, 'AÃ§Ã£o', 7, 'S'),
+(10, 4, 'MÃ³dulo', 6, 'S'),
+(11, 2, 'Categoria', 5, 'N'),
+(12, 2, 'Empresa', 1, 'N'),
+(13, 2, 'Unidade', 5, 'N'),
+(14, 2, 'Cidade', 4, 'S'),
+(15, 4, 'Menu', 1, 'S'),
+(16, 4, 'Submenu', 2, 'S'),
+(17, 4, 'PÃ¡gina', 3, 'S'),
+(19, 8, 'NULL', 1, 'S'),
+(20, 2, 'HistÃ³rico', 4, 'N'),
+(21, 2, 'SituaÃ§Ã£o', 5, 'S'),
+(22, 2, 'Perfil', 6, 'S');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `PAGINA`
+--
+
+CREATE TABLE IF NOT EXISTS `PAGINA` (
+  `PAG_CODIGO` bigint(20) NOT NULL AUTO_INCREMENT,
+  `MEN_CODIGO` bigint(20) NOT NULL,
+  `SUB_CODIGO` bigint(20) NOT NULL,
+  `PER_CODIGO` bigint(20) NOT NULL,
+  `PAG_NOME` varchar(50) NOT NULL,
+  `PAG_DESCRICAO` varchar(50) NOT NULL,
+  `PAG_ORDEM` smallint(6) NOT NULL DEFAULT '0',
+  `PAG_ATIVO` char(1) NOT NULL DEFAULT 'S',
+  PRIMARY KEY (`PAG_CODIGO`,`MEN_CODIGO`),
+  KEY `MENU_PAGINA_PFK` (`MEN_CODIGO`) USING BTREE,
+  KEY `PERFIL_PAGINA_FK` (`PER_CODIGO`) USING BTREE,
+  KEY `PAG_ATIVO` (`PAG_ATIVO`) USING BTREE,
+  KEY `SUBMENU_PAGINA_FK` (`SUB_CODIGO`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=83 ;
+
+--
+-- Extraindo dados da tabela `PAGINA`
+--
+
+INSERT INTO `PAGINA` (`PAG_CODIGO`, `MEN_CODIGO`, `SUB_CODIGO`, `PER_CODIGO`, `PAG_NOME`, `PAG_DESCRICAO`, `PAG_ORDEM`, `PAG_ATIVO`) VALUES
+(1, 1, 1, 3, 'produto_listar', 'Produtos', 1, 'S'),
+(2, 1, 2, 3, 'item_listar', 'Itens', 0, 'S'),
+(4, 2, 19, 3, 'funcionario_listar', 'FuncionÃ¡rios', 0, 'S'),
+(5, 2, 4, 3, 'usuario_listar', 'UsÃ¡rios', 1, 'S'),
+(6, 3, 19, 3, 'tarefa_listar', 'Tarefas', 1, 'S'),
+(8, 4, 7, 3, 'aba_listar', 'Abas', 0, 'S'),
+(10, 4, 8, 3, 'abcabaacao_listar', 'Aba AÃ§Ãµes', 0, 'S'),
+(11, 4, 9, 3, 'acao_listar', 'AÃ§Ãµes', 0, 'S'),
+(12, 4, 10, 3, 'modulo_listar', 'MÃ³dulos', 0, 'S'),
+(13, 1, 19, 2, 'produto_novo', 'Produto', 0, 'S'),
+(14, 1, 19, 3, 'produto_lixeira', 'Lixeira de Produto', 0, 'S'),
+(15, 1, 19, 2, 'item_novo', 'Item', 0, 'S'),
+(17, 1, 19, 3, 'item_lixeira', 'Lixeira da Item', 0, 'S'),
+(18, 2, 19, 2, 'funcionario_novo', 'FuncionÃ¡rio', 0, 'S'),
+(19, 2, 19, 3, 'funcionario_lixeira', 'Lixeira de FuncionÃ¡rio', 0, 'S'),
+(20, 2, 19, 2, 'usuario_novo', 'UsuÃ¡rio', 0, 'S'),
+(22, 2, 19, 3, 'usuario_lixeira', 'Lixeira de UsÃ¡rio', 0, 'S'),
+(23, 3, 19, 2, 'tarefa_novo', 'Tarefa', 0, 'S'),
+(25, 3, 19, 3, 'tarefa_lixeira', 'Lixeira de Tarefa', 0, 'S'),
+(26, 4, 19, 2, 'modulo_novo', 'MÃ³dulo', 0, 'S'),
+(27, 4, 19, 3, 'modulo_lixeira', 'Lixeira de MÃ³dulo', 0, 'S'),
+(28, 4, 19, 2, 'acao_novo', 'Acao', 0, 'S'),
+(30, 4, 19, 3, 'acao_lixeira', 'Lixeira de AÃ§Ãµes', 0, 'S'),
+(31, 4, 19, 2, 'aba_novo', 'Aba', 0, 'S'),
+(34, 4, 19, 3, 'aba_lixeira', 'Lixeira de Abas', 0, 'S'),
+(35, 4, 19, 2, 'abcabaacao_novo', 'Aba AÃ§Ã£o', 0, 'S'),
+(36, 4, 19, 3, 'abcabaacao_lixeira', 'Lixeira de Aba AÃ§Ã£o', 0, 'S'),
+(37, 5, 19, 3, 'suporte_listar', 'Suportes', 0, 'S'),
+(38, 5, 19, 2, 'suporte_novo', 'Suporte', 0, 'S'),
+(39, 5, 19, 3, 'suporte_lixeira', 'Lixeira de Suporte', 0, 'S'),
+(40, 2, 11, 3, 'categoria_listar', 'Categorias', 0, 'N'),
+(41, 2, 19, 2, 'categoria_novo', 'Categoria', 0, 'N'),
+(42, 2, 19, 3, 'categoria_lixeira', 'Lixeira de Categoria', 0, 'N'),
+(43, 2, 12, 3, 'empresa_listar', 'Empresas', 0, 'N'),
+(44, 2, 19, 3, 'empresa_lixeira', 'Lixeira de Empresas', 0, 'N'),
+(45, 2, 19, 2, 'empresa_novo', 'Empresa', 0, 'N'),
+(46, 6, 19, 3, 'pedido_listar', 'Pedido', 1, 'S'),
+(47, 6, 19, 3, 'pedido_lixeira', 'Lixeira de Pedido', 0, 'S'),
+(48, 6, 19, 2, 'pedido_novo', 'Pedido', 0, 'S'),
+(49, 2, 13, 3, 'unidade_listar', 'Unidades', 0, 'N'),
+(50, 2, 19, 2, 'unidade_lixeira', 'Lixeira de Unidade', 0, 'N'),
+(51, 2, 19, 2, 'unidade_novo', 'Unidade', 0, 'N'),
+(52, 2, 14, 3, 'cidade_listar', 'Cidades', 0, 'S'),
+(53, 2, 19, 3, 'cidade_lixeira', 'Lixeira de Cidade', 0, 'S'),
+(54, 2, 19, 2, 'cidade_novo', 'Cidade', 0, 'S'),
+(55, 4, 16, 3, 'submenu_listar', 'Submenus', 0, 'S'),
+(56, 4, 19, 3, 'submenu_lixeira', 'Lixeira de Submenu', 0, 'S'),
+(57, 4, 19, 2, 'submenu_novo', 'Submenu', 0, 'S'),
+(58, 4, 17, 3, 'pagina_listar', 'PÃ¡ginas', 0, 'S'),
+(59, 4, 19, 3, 'pagina_lixeira', 'Lixeira de PÃ¡gina', 0, 'S'),
+(60, 4, 19, 2, 'pagina_novo', 'PÃ¡gina', 0, 'S'),
+(61, 4, 15, 3, 'menu_listar', 'Menus', 1, 'S'),
+(62, 4, 19, 3, 'menu_lixeira', 'Lixeira de Menu', 0, 'S'),
+(63, 4, 19, 2, 'menu_novo', 'Menu', 0, 'S'),
+(67, 1, 19, 3, 'produto_relatorio', 'RelatÃ³rios de Produto', 0, 'N'),
+(72, 3, 19, 3, 'tarefa_relatorio', 'RelatÃ³rios de Tarefa', 0, 'N'),
+(73, 2, 19, 3, 'empresa_relatorio', 'RelatÃ³rios de Empresas', 0, 'N'),
+(74, 2, 19, 3, 'funcionario_relatorio', 'RelatÃ³rios de FuncionÃ¡rio', 0, 'S'),
+(76, 1, 19, 3, 'item_relatorio', 'RelatÃ³rios de Item', 0, 'N'),
+(77, 6, 19, 3, 'pedido_relatorio', 'RelatÃ³rios de Pedido', 0, 'S'),
+(78, 2, 20, 3, 'historico_listar', 'HistÃ³rico', 0, 'S'),
+(79, 2, 21, 3, 'situacao_listar', 'SituaÃ§Ãµes', 0, 'S'),
+(80, 2, 19, 2, 'situacao_novo', 'SituaÃ§Ã£o', 0, 'S'),
+(81, 2, 22, 3, 'perfil_listar', 'Perfis', 0, 'S'),
+(82, 2, 19, 2, 'perfil_novo', 'Perfil', 0, 'S');
 
 -- --------------------------------------------------------
 
@@ -59,8 +324,8 @@ INSERT INTO `ABA` (`ABA_CODIGO`, `MOD_CODIGO`, `PAG_CODIGO`, `MEN_CODIGO`, `ABA_
 (10, 4, 12, 4, 'MÃ³dulo', 1, 'S', 'title=''Clique aqui para listar'' class=''glyphicon glyphicon-list'' style=''color: blue'''),
 (11, 4, 26, 4, 'Novo', 2, 'S', 'title=''Clique aqui para adicionar'' class='' glyphicon glyphicon-plus'' style=''color: green'''),
 (12, 4, 27, 4, 'Lixeira', 3, 'S', 'title=''Clique aqui para ir a lixeira'' class='' glyphicon glyphicon-trash'' style=''color: black'''),
-(13, 5, 2, 1, 'PeÃ§a', 1, 'S', 'title=''Clique aqui para listar'' class=''glyphicon glyphicon-list'' style=''color: blue'''),
-(14, 5, 15, 1, 'Nova', 2, 'S', 'title=''Clique aqui para adicionar'' class='' glyphicon glyphicon-plus'' style=''color: green'''),
+(13, 5, 2, 1, 'Item', 1, 'S', 'title=''Clique aqui para listar'' class=''glyphicon glyphicon-list'' style=''color: blue'''),
+(14, 5, 15, 1, 'Novo', 2, 'S', 'title=''Clique aqui para adicionar'' class='' glyphicon glyphicon-plus'' style=''color: green'''),
 (15, 5, 17, 1, 'Lixeira', 3, 'S', 'title=''Clique aqui para ir a lixeira'' class='' glyphicon glyphicon-trash'' style=''color: black'''),
 (16, 6, 1, 1, 'Produto', 1, 'S', 'title=''Clique aqui para listar'' class=''glyphicon glyphicon-list'' style=''color: blue'''),
 (17, 6, 13, 1, 'Novo', 2, 'S', 'title=''Clique aqui para adicionar'' class='' glyphicon glyphicon-plus'' style=''color: green'''),
@@ -248,34 +513,50 @@ INSERT INTO `ABCABAACAO` (`ABC_CODIGO`, `ABA_CODIGO`, `MOD_CODIGO`, `ACA_CODIGO`
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `ACAO`
+-- Estrutura da tabela `ESTADO`
 --
 
-CREATE TABLE IF NOT EXISTS `ACAO` (
-  `ACA_CODIGO` bigint(20) NOT NULL AUTO_INCREMENT,
-  `ACA_NOME` varchar(20) NOT NULL,
-  `ACA_OK` varchar(20) NOT NULL,
-  `ACA_DESCRICAO` varchar(20) NOT NULL,
-  `ACA_ATRIBUTO` varchar(500) DEFAULT NULL,
-  `ACA_ACTION` varchar(50) DEFAULT NULL,
-  `ACA_ATIVO` char(1) NOT NULL DEFAULT 'S',
-  PRIMARY KEY (`ACA_CODIGO`),
-  KEY `ACA_ATIVO` (`ACA_ATIVO`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+CREATE TABLE IF NOT EXISTS `ESTADO` (
+  `EST_CODIGO` bigint(20) NOT NULL AUTO_INCREMENT,
+  `EST_UF` char(2) NOT NULL,
+  `EST_ATIVO` char(1) NOT NULL DEFAULT 'S',
+  `EST_NOME` varchar(50) NOT NULL,
+  PRIMARY KEY (`EST_CODIGO`),
+  KEY `EST_ATIVO` (`EST_ATIVO`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=28 ;
 
 --
--- Extraindo dados da tabela `ACAO`
+-- Extraindo dados da tabela `ESTADO`
 --
 
-INSERT INTO `ACAO` (`ACA_CODIGO`, `ACA_NOME`, `ACA_OK`, `ACA_DESCRICAO`, `ACA_ATRIBUTO`, `ACA_ACTION`, `ACA_ATIVO`) VALUES
-(1, 'alterar', 'alterado', 'Alterar', 'title=''Clique aqui para alterar ''class=''glyphicon glyphicon-pencil'' style=''color: orange''', NULL, 'S'),
-(2, 'excluir', 'excluido', 'Excluir', 'title=''Clique aqui para excluir ''class=''glyphicon glyphicon-remove'' style=''color: red''', NULL, 'S'),
-(3, 'incluir', 'incluido', 'Incluir', '', NULL, 'S'),
-(4, 'listar', 'listado', 'Listar', '', NULL, 'S'),
-(5, 'restaurar', 'restaurado', 'Restaurar', 'title=''Clique aqui para restaurar ''class=''glyphicon glyphicon-share-alt'' style=''color: silver''', NULL, 'S'),
-(6, 'imprimir', 'impresso', 'Imprimir', 'title=''Clique aqui para imprimir'' class=''glyphicon glyphicon-print'' style=''color: silver''', NULL, 'S'),
-(7, 'trocar', 'trocada', 'Trocar Sit.', 'title=''Trocar Situação'' class=''glyphicon glyphicon-refresh'' style=''color: blue''', '#', 'S'),
-(8, 'detalhar_tarefa', 'detalhada', 'Detalhar', 'title=''Detalhar Tarefa'' class=''glyphicon glyphicon-list''', NULL, 'S');
+INSERT INTO `ESTADO` (`EST_CODIGO`, `EST_UF`, `EST_ATIVO`, `EST_NOME`) VALUES
+(1, 'AC', 'S', 'Acre'),
+(2, 'AL', 'S', 'Alagoas'),
+(3, 'AM', 'S', 'Amazonas'),
+(4, 'AP', 'S', 'AmapÃ¡'),
+(5, 'BA', 'S', 'Bahia'),
+(6, 'CE', 'S', 'CearÃ¡'),
+(7, 'DF', 'S', 'Distrito Federal'),
+(8, 'ES', 'S', 'EspÃ­rito Santo'),
+(9, 'GO', 'S', 'GoiÃ¡s'),
+(10, 'MA', 'S', 'MaranhÃ£o'),
+(11, 'MG', 'S', 'Minas Gerais'),
+(12, 'MS', 'S', 'Mato Grosso do Sul'),
+(13, 'MT', 'S', 'Mato Grosso'),
+(14, 'PA', 'S', 'ParÃ¡'),
+(15, 'PB', 'S', 'ParaÃ­ba'),
+(16, 'PE', 'S', 'Pernambuco'),
+(17, 'PI', 'S', 'PiauÃ­'),
+(18, 'PR', 'S', 'ParanÃ¡'),
+(19, 'RJ', 'S', 'Rio de Janeiro'),
+(20, 'RN', 'S', 'Rio Grande do Norte'),
+(21, 'RO', 'S', 'RondÃ´nia'),
+(22, 'RR', 'S', 'Roraima'),
+(23, 'RS', 'S', 'Rio Grande do Sul'),
+(24, 'SC', 'S', 'Santa Catarina'),
+(25, 'SE', 'S', 'Sergipe'),
+(26, 'SP', 'S', 'SÃ£o Paulo'),
+(27, 'TO', 'S', 'Tocantins');
 
 -- --------------------------------------------------------
 
@@ -357,263 +638,55 @@ INSERT INTO `EMPRESA_PERFIL` (`EMP_CODIGO`, `PER_CODIGO`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `ESTADO`
+-- Estrutura da tabela `USUARIO`
 --
 
-CREATE TABLE IF NOT EXISTS `ESTADO` (
-  `EST_CODIGO` bigint(20) NOT NULL AUTO_INCREMENT,
-  `EST_UF` char(2) NOT NULL,
-  `EST_ATIVO` char(1) NOT NULL DEFAULT 'S',
-  `EST_NOME` varchar(50) NOT NULL,
-  PRIMARY KEY (`EST_CODIGO`),
-  KEY `EST_ATIVO` (`EST_ATIVO`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=28 ;
-
---
--- Extraindo dados da tabela `ESTADO`
---
-
-INSERT INTO `ESTADO` (`EST_CODIGO`, `EST_UF`, `EST_ATIVO`, `EST_NOME`) VALUES
-(1, 'AC', 'S', 'Acre'),
-(2, 'AL', 'S', 'Alagoas'),
-(3, 'AM', 'S', 'Amazonas'),
-(4, 'AP', 'S', 'AmapÃ¡'),
-(5, 'BA', 'S', 'Bahia'),
-(6, 'CE', 'S', 'CearÃ¡'),
-(7, 'DF', 'S', 'Distrito Federal'),
-(8, 'ES', 'S', 'EspÃ­rito Santo'),
-(9, 'GO', 'S', 'GoiÃ¡s'),
-(10, 'MA', 'S', 'MaranhÃ£o'),
-(11, 'MG', 'S', 'Minas Gerais'),
-(12, 'MS', 'S', 'Mato Grosso do Sul'),
-(13, 'MT', 'S', 'Mato Grosso'),
-(14, 'PA', 'S', 'ParÃ¡'),
-(15, 'PB', 'S', 'ParaÃ­ba'),
-(16, 'PE', 'S', 'Pernambuco'),
-(17, 'PI', 'S', 'PiauÃ­'),
-(18, 'PR', 'S', 'ParanÃ¡'),
-(19, 'RJ', 'S', 'Rio de Janeiro'),
-(20, 'RN', 'S', 'Rio Grande do Norte'),
-(21, 'RO', 'S', 'RondÃ´nia'),
-(22, 'RR', 'S', 'Roraima'),
-(23, 'RS', 'S', 'Rio Grande do Sul'),
-(24, 'SC', 'S', 'Santa Catarina'),
-(25, 'SE', 'S', 'Sergipe'),
-(26, 'SP', 'S', 'SÃ£o Paulo'),
-(27, 'TO', 'S', 'Tocantins');
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `MENU`
---
-
-CREATE TABLE IF NOT EXISTS `MENU` (
-  `MEN_CODIGO` bigint(20) NOT NULL AUTO_INCREMENT,
-  `MEN_NOME` varchar(50) NOT NULL,
-  `MEN_ORDEM` smallint(6) NOT NULL,
-  `MEN_ATIVO` char(1) NOT NULL DEFAULT 'S',
-  PRIMARY KEY (`MEN_CODIGO`),
-  KEY `MEN_ATIVO` (`MEN_ATIVO`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
-
---
--- Extraindo dados da tabela `MENU`
---
-
-INSERT INTO `MENU` (`MEN_CODIGO`, `MEN_NOME`, `MEN_ORDEM`, `MEN_ATIVO`) VALUES
-(1, 'Cadastros', 2, 'S'),
-(2, 'Globais', 1, 'S'),
-(3, 'Tarefa', 3, 'S'),
-(4, 'ManutenÃ§Ã£o', 5, 'N'),
-(5, 'Suporte', 0, 'N'),
-(6, 'Pedido', 4, 'N'),
-(8, 'NULL', 0, 'S');
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `MODULO`
---
-
-CREATE TABLE IF NOT EXISTS `MODULO` (
-  `MOD_CODIGO` bigint(20) NOT NULL AUTO_INCREMENT,
-  `MOD_NOME` varchar(20) NOT NULL,
-  `MOD_DESCRICAO` varchar(20) NOT NULL,
-  `MOD_GENERO` char(1) NOT NULL,
-  `MOD_ATIVO` char(1) NOT NULL DEFAULT 'S',
-  `MOD_APELIDO` char(3) NOT NULL,
-  PRIMARY KEY (`MOD_CODIGO`),
-  UNIQUE KEY `MOD_APELIDO` (`MOD_APELIDO`) USING BTREE,
-  KEY `MOD_ATIVO` (`MOD_ATIVO`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
-
---
--- Extraindo dados da tabela `MODULO`
---
-
-INSERT INTO `MODULO` (`MOD_CODIGO`, `MOD_NOME`, `MOD_DESCRICAO`, `MOD_GENERO`, `MOD_ATIVO`, `MOD_APELIDO`) VALUES
-(1, 'aba', 'Aba', 'F', 'S', 'ABA'),
-(2, 'abcabaacao', 'Aba AÃ§Ã£o', 'F', 'S', 'ABC'),
-(3, 'funcionario', 'FuncionÃ¡rio', 'M', 'N', 'FUN'),
-(4, 'modulo', 'MÃ³dulo', 'M', 'S', 'MOD'),
-(5, 'peca', 'PeÃ§a', 'F', 'S', 'PEC'),
-(6, 'produto', 'Produto', 'M', 'S', 'PRO'),
-(7, 'suporte', 'Suporte', 'M', 'S', 'SUP'),
-(8, 'tarefa', 'Tarefa', 'F', 'S', 'TAR'),
-(9, 'usuario', 'UsuÃ¡rio', 'M', 'S', 'USU'),
-(10, 'acao', 'AÃ§Ã£o', 'F', 'S', 'ACA'),
-(11, 'categoria', 'Categoria', 'F', 'N', 'CAT'),
-(12, 'empresa', 'Empresa', 'F', 'S', 'EMP'),
-(13, 'pedido', 'Pedido', 'M', 'S', 'PED'),
-(14, 'unidade', 'Unidade', 'F', 'S', 'UNI'),
-(15, 'cidade', 'Cidade', 'F', 'S', 'CID'),
-(16, 'menu', 'Menu', 'M', 'S', 'MEN'),
-(17, 'submenu', 'Submenu', 'M', 'S', 'SUB'),
-(18, 'pagina', 'PÃ¡gina', 'F', 'S', 'PAG'),
-(19, 'historico', 'HistÃ³rico', 'M', 'S', 'HIS'),
-(20, 'situacao', 'SituaÃ§Ã£o', 'F', 'S', 'SIT'),
-(21, 'perfil', 'Perfil', 'M', 'S', 'PER'),
-(22, 'estado', 'Estado', 'M', 'S', 'EST');
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `PAGINA`
---
-
-CREATE TABLE IF NOT EXISTS `PAGINA` (
-  `PAG_CODIGO` bigint(20) NOT NULL AUTO_INCREMENT,
-  `MEN_CODIGO` bigint(20) NOT NULL,
-  `SUB_CODIGO` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `USUARIO` (
+  `USU_CODIGO` bigint(20) NOT NULL AUTO_INCREMENT,
+  `EMP_CODIGO` bigint(20) NOT NULL,
   `PER_CODIGO` bigint(20) NOT NULL,
-  `PAG_NOME` varchar(50) NOT NULL,
-  `PAG_DESCRICAO` varchar(50) NOT NULL,
-  `PAG_ORDEM` smallint(6) NOT NULL DEFAULT '0',
-  `PAG_ATIVO` char(1) NOT NULL DEFAULT 'S',
-  PRIMARY KEY (`PAG_CODIGO`,`MEN_CODIGO`),
-  KEY `MENU_PAGINA_PFK` (`MEN_CODIGO`) USING BTREE,
-  KEY `PERFIL_PAGINA_FK` (`PER_CODIGO`) USING BTREE,
-  KEY `PAG_ATIVO` (`PAG_ATIVO`) USING BTREE,
-  KEY `SUBMENU_PAGINA_FK` (`SUB_CODIGO`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=83 ;
+  `USU_LOGIN` varchar(50) NOT NULL,
+  `USU_NOME` varchar(100) NOT NULL,
+  `USU_SENHA` varchar(20) NOT NULL,
+  `USU_ATIVO` char(1) NOT NULL DEFAULT 'S',
+  PRIMARY KEY (`USU_CODIGO`),
+  UNIQUE KEY `USU_LOGIN` (`USU_LOGIN`) USING BTREE,
+  KEY `PERFIL_USUARIO_FK` (`PER_CODIGO`) USING BTREE,
+  KEY `EMPRESA_USUARIO_FK` (`EMP_CODIGO`) USING BTREE,
+  KEY `USU_ATIVO` (`USU_ATIVO`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
--- Extraindo dados da tabela `PAGINA`
+-- Extraindo dados da tabela `USUARIO`
 --
 
-INSERT INTO `PAGINA` (`PAG_CODIGO`, `MEN_CODIGO`, `SUB_CODIGO`, `PER_CODIGO`, `PAG_NOME`, `PAG_DESCRICAO`, `PAG_ORDEM`, `PAG_ATIVO`) VALUES
-(1, 1, 1, 3, 'produto_listar', 'Produtos', 1, 'S'),
-(2, 1, 2, 3, 'peca_listar', 'PeÃ§as', 0, 'S'),
-(4, 2, 19, 3, 'funcionario_listar', 'FuncionÃ¡rios', 0, 'S'),
-(5, 2, 4, 3, 'usuario_listar', 'UsÃ¡rios', 1, 'S'),
-(6, 3, 19, 3, 'tarefa_listar', 'Tarefas', 1, 'S'),
-(8, 4, 7, 3, 'aba_listar', 'Abas', 0, 'S'),
-(10, 4, 8, 3, 'abcabaacao_listar', 'Aba AÃ§Ãµes', 0, 'S'),
-(11, 4, 9, 3, 'acao_listar', 'AÃ§Ãµes', 0, 'S'),
-(12, 4, 10, 3, 'modulo_listar', 'MÃ³dulos', 0, 'S'),
-(13, 1, 19, 2, 'produto_novo', 'Produto', 0, 'S'),
-(14, 1, 19, 3, 'produto_lixeira', 'Lixeira de Produto', 0, 'S'),
-(15, 1, 19, 2, 'peca_novo', 'PeÃ§a', 0, 'S'),
-(17, 1, 19, 3, 'peca_lixeira', 'Lixeira da PeÃ§a', 0, 'S'),
-(18, 2, 19, 2, 'funcionario_novo', 'FuncionÃ¡rio', 0, 'S'),
-(19, 2, 19, 3, 'funcionario_lixeira', 'Lixeira de FuncionÃ¡rio', 0, 'S'),
-(20, 2, 19, 2, 'usuario_novo', 'UsuÃ¡rio', 0, 'S'),
-(22, 2, 19, 3, 'usuario_lixeira', 'Lixeira de UsÃ¡rio', 0, 'S'),
-(23, 3, 19, 2, 'tarefa_novo', 'Tarefa', 0, 'S'),
-(25, 3, 19, 3, 'tarefa_lixeira', 'Lixeira de Tarefa', 0, 'S'),
-(26, 4, 19, 2, 'modulo_novo', 'MÃ³dulo', 0, 'S'),
-(27, 4, 19, 3, 'modulo_lixeira', 'Lixeira de MÃ³dulo', 0, 'S'),
-(28, 4, 19, 2, 'acao_novo', 'Acao', 0, 'S'),
-(30, 4, 19, 3, 'acao_lixeira', 'Lixeira de AÃ§Ãµes', 0, 'S'),
-(31, 4, 19, 2, 'aba_novo', 'Aba', 0, 'S'),
-(34, 4, 19, 3, 'aba_lixeira', 'Lixeira de Abas', 0, 'S'),
-(35, 4, 19, 2, 'abcabaacao_novo', 'Aba AÃ§Ã£o', 0, 'S'),
-(36, 4, 19, 3, 'abcabaacao_lixeira', 'Lixeira de Aba AÃ§Ã£o', 0, 'S'),
-(37, 5, 19, 3, 'suporte_listar', 'Suportes', 0, 'S'),
-(38, 5, 19, 2, 'suporte_novo', 'Suporte', 0, 'S'),
-(39, 5, 19, 3, 'suporte_lixeira', 'Lixeira de Suporte', 0, 'S'),
-(40, 2, 11, 3, 'categoria_listar', 'Categorias', 0, 'N'),
-(41, 2, 19, 2, 'categoria_novo', 'Categoria', 0, 'N'),
-(42, 2, 19, 3, 'categoria_lixeira', 'Lixeira de Categoria', 0, 'N'),
-(43, 2, 12, 3, 'empresa_listar', 'Empresas', 0, 'N'),
-(44, 2, 19, 3, 'empresa_lixeira', 'Lixeira de Empresas', 0, 'N'),
-(45, 2, 19, 2, 'empresa_novo', 'Empresa', 0, 'N'),
-(46, 6, 19, 3, 'pedido_listar', 'Pedido', 1, 'S'),
-(47, 6, 19, 3, 'pedido_lixeira', 'Lixeira de Pedido', 0, 'S'),
-(48, 6, 19, 2, 'pedido_novo', 'Pedido', 0, 'S'),
-(49, 2, 13, 3, 'unidade_listar', 'Unidades', 0, 'N'),
-(50, 2, 19, 2, 'unidade_lixeira', 'Lixeira de Unidade', 0, 'N'),
-(51, 2, 19, 2, 'unidade_novo', 'Unidade', 0, 'N'),
-(52, 2, 14, 3, 'cidade_listar', 'Cidades', 0, 'S'),
-(53, 2, 19, 3, 'cidade_lixeira', 'Lixeira de Cidade', 0, 'S'),
-(54, 2, 19, 2, 'cidade_novo', 'Cidade', 0, 'S'),
-(55, 4, 16, 3, 'submenu_listar', 'Submenus', 0, 'S'),
-(56, 4, 19, 3, 'submenu_lixeira', 'Lixeira de Submenu', 0, 'S'),
-(57, 4, 19, 2, 'submenu_novo', 'Submenu', 0, 'S'),
-(58, 4, 17, 3, 'pagina_listar', 'PÃ¡ginas', 0, 'S'),
-(59, 4, 19, 3, 'pagina_lixeira', 'Lixeira de PÃ¡gina', 0, 'S'),
-(60, 4, 19, 2, 'pagina_novo', 'PÃ¡gina', 0, 'S'),
-(61, 4, 15, 3, 'menu_listar', 'Menus', 1, 'S'),
-(62, 4, 19, 3, 'menu_lixeira', 'Lixeira de Menu', 0, 'S'),
-(63, 4, 19, 2, 'menu_novo', 'Menu', 0, 'S'),
-(67, 1, 19, 3, 'produto_relatorio', 'RelatÃ³rios de Produto', 0, 'N'),
-(72, 3, 19, 3, 'tarefa_relatorio', 'RelatÃ³rios de Tarefa', 0, 'N'),
-(73, 2, 19, 3, 'empresa_relatorio', 'RelatÃ³rios de Empresas', 0, 'N'),
-(74, 2, 19, 3, 'funcionario_relatorio', 'RelatÃ³rios de FuncionÃ¡rio', 0, 'S'),
-(76, 1, 19, 3, 'peca_relatorio', 'RelatÃ³rios de PeÃ§a', 0, 'N'),
-(77, 6, 19, 3, 'pedido_relatorio', 'RelatÃ³rios de Pedido', 0, 'S'),
-(78, 2, 20, 3, 'historico_listar', 'HistÃ³rico', 0, 'S'),
-(79, 2, 21, 3, 'situacao_listar', 'SituaÃ§Ãµes', 0, 'S'),
-(80, 2, 19, 2, 'situacao_novo', 'SituaÃ§Ã£o', 0, 'S'),
-(81, 2, 22, 3, 'perfil_listar', 'Perfis', 0, 'S'),
-(82, 2, 19, 2, 'perfil_novo', 'Perfil', 0, 'S');
+INSERT INTO `USUARIO` (`USU_CODIGO`, `EMP_CODIGO`, `PER_CODIGO`, `USU_LOGIN`, `USU_NOME`, `USU_SENHA`, `USU_ATIVO`) VALUES
+(1, 1, 2, 'luiz', 'Luiz OtÃ¡vio Dorigon', '123', 'S'),
+(2, 1, 3, 'pitoco', 'Pitoco', '123', 'S');
 
--- --------------------------------------------------------
+-- --------------------------------------------------------------------------------
 
 --
--- Estrutura da tabela `PECA`
+-- Estrutura da tabela `ITEM`
 --
 
-CREATE TABLE IF NOT EXISTS `PECA` (
-  `PEC_CODIGO` bigint(20) NOT NULL AUTO_INCREMENT,
-  `PEC_NOME` varchar(50) NOT NULL,
-  `PEC_VALOR` decimal(10,2) NOT NULL,
-  `PEC_ATIVO` char(1) NOT NULL DEFAULT 'S',
-  PRIMARY KEY (`PEC_CODIGO`),
-  KEY `PEC_ATIVO` (`PEC_ATIVO`) USING BTREE
+CREATE TABLE IF NOT EXISTS `ITEM` (
+  `ITE_CODIGO` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ITE_NOME` varchar(50) NOT NULL,
+  `ITE_VALOR` decimal(10,2) NOT NULL,
+  `ITE_ATIVO` char(1) NOT NULL DEFAULT 'S',
+  PRIMARY KEY (`ITE_CODIGO`),
+  KEY `ITE_ATIVO` (`ITE_ATIVO`) USING BTREE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
--- Extraindo dados da tabela `PECA`
+-- Extraindo dados da tabela `ITEM`
 --
 
-INSERT INTO `PECA` (`PEC_CODIGO`, `PEC_NOME`, `PEC_VALOR`, `PEC_ATIVO`) VALUES
+INSERT INTO `ITEM` (`ITE_CODIGO`, `ITE_NOME`, `ITE_VALOR`, `ITE_ATIVO`) VALUES
 (1, 'PÃ© de Mesa ', 23.20, 'S'),
 (2, 'Tampa de mesa ', 34.00, 'S'),
 (3, 'Vidro para mesa', 100.00, 'S');
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `PERFIL`
---
-
-CREATE TABLE IF NOT EXISTS `PERFIL` (
-  `PER_CODIGO` bigint(20) NOT NULL AUTO_INCREMENT,
-  `PER_NOME` varchar(50) NOT NULL,
-  `PER_ATIVO` char(1) NOT NULL DEFAULT 'S',
-  PRIMARY KEY (`PER_CODIGO`),
-  KEY `PER_ATIVO` (`PER_ATIVO`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
-
---
--- Extraindo dados da tabela `PERFIL`
---
-
-INSERT INTO `PERFIL` (`PER_CODIGO`, `PER_NOME`, `PER_ATIVO`) VALUES
-(2, 'Administrador', 'S'),
-(3, 'FuncionÃ¡rio', 'S');
 
 -- --------------------------------------------------------
 
@@ -643,23 +716,23 @@ INSERT INTO `PRODUTO` (`PRO_CODIGO`, `PRO_NOME`, `PRO_OBSERVACAO`, `PRO_ATIVO`, 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `PRODUTO_PECA`
+-- Estrutura da tabela `PRODUTO_ITEM`
 --
 
-CREATE TABLE IF NOT EXISTS `PRODUTO_PECA` (
+CREATE TABLE IF NOT EXISTS `PRODUTO_ITEM` (
   `PRO_CODIGO` bigint(20) NOT NULL,
-  `PEC_CODIGO` bigint(20) NOT NULL,
-  `PEC_QUANTIDADE` decimal(10,2) DEFAULT NULL,
-  `PEC_VALORUNITARIO` decimal(10,2) DEFAULT NULL,
-  PRIMARY KEY (`PRO_CODIGO`,`PEC_CODIGO`),
-  KEY `PECA_PRODUTO_PECA_PFK` (`PEC_CODIGO`) USING BTREE
+  `ITE_CODIGO` bigint(20) NOT NULL,
+  `ITE_QUANTIDADE` decimal(10,2) DEFAULT NULL,
+  `ITE_VALORUNITARIO` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`PRO_CODIGO`,`ITE_CODIGO`),
+  KEY `ITEM_PRODUTO_ITEM_PFK` (`ITE_CODIGO`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Extraindo dados da tabela `PRODUTO_PECA`
+-- Extraindo dados da tabela `PRODUTO_ITEM`
 --
 
-INSERT INTO `PRODUTO_PECA` (`PRO_CODIGO`, `PEC_CODIGO`, `PEC_QUANTIDADE`, `PEC_VALORUNITARIO`) VALUES
+INSERT INTO `PRODUTO_ITEM` (`PRO_CODIGO`, `ITE_CODIGO`, `ITE_QUANTIDADE`, `ITE_VALORUNITARIO`) VALUES
 (1, 1, 4.00, 23.20),
 (1, 2, 1.00, 34.00),
 (1, 3, 1.00, 100.00);
@@ -695,48 +768,6 @@ INSERT INTO `SITUACAO` (`SIT_CODIGO`, `MOD_CODIGO`, `SIT_NOME`, `SIT_ORDEM`, `SI
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `SUBMENU`
---
-
-CREATE TABLE IF NOT EXISTS `SUBMENU` (
-  `SUB_CODIGO` bigint(20) NOT NULL AUTO_INCREMENT,
-  `MEN_CODIGO` bigint(20) NOT NULL,
-  `SUB_NOME` varchar(50) DEFAULT NULL,
-  `SUB_ORDEM` smallint(6) NOT NULL,
-  `SUB_ATIVO` char(1) NOT NULL DEFAULT 'S',
-  PRIMARY KEY (`SUB_CODIGO`),
-  KEY `SUB_ATIVO` (`SUB_ATIVO`) USING BTREE,
-  KEY `MENU_SUBMENU_FK` (`MEN_CODIGO`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
-
---
--- Extraindo dados da tabela `SUBMENU`
---
-
-INSERT INTO `SUBMENU` (`SUB_CODIGO`, `MEN_CODIGO`, `SUB_NOME`, `SUB_ORDEM`, `SUB_ATIVO`) VALUES
-(1, 1, 'Produto', 1, 'S'),
-(2, 1, 'PeÃ§a', 2, 'S'),
-(3, 2, 'FuncionÃ¡rio', 2, 'N'),
-(4, 2, 'UsuÃ¡rio', 3, 'S'),
-(7, 4, 'Aba', 4, 'S'),
-(8, 4, 'Aba AÃ§Ã£o', 5, 'S'),
-(9, 4, 'AÃ§Ã£o', 7, 'S'),
-(10, 4, 'MÃ³dulo', 6, 'S'),
-(11, 2, 'Categoria', 5, 'N'),
-(12, 2, 'Empresa', 1, 'N'),
-(13, 2, 'Unidade', 5, 'N'),
-(14, 2, 'Cidade', 4, 'S'),
-(15, 4, 'Menu', 1, 'S'),
-(16, 4, 'Submenu', 2, 'S'),
-(17, 4, 'PÃ¡gina', 3, 'S'),
-(19, 8, 'NULL', 1, 'S'),
-(20, 2, 'HistÃ³rico', 4, 'N'),
-(21, 2, 'SituaÃ§Ã£o', 5, 'S'),
-(22, 2, 'Perfil', 6, 'S');
-
--- --------------------------------------------------------
-
---
 -- Estrutura da tabela `TAREFA`
 --
 
@@ -760,22 +791,22 @@ INSERT INTO `TAREFA` (`TAR_CODIGO`, `TAR_NOME`, `TAR_DATAINICIO`, `TAR_ATIVO`, `
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `TAREFA_PECA`
+-- Estrutura da tabela `TAREFA_ITEM`
 --
 
-CREATE TABLE IF NOT EXISTS `TAREFA_PECA` (
+CREATE TABLE IF NOT EXISTS `TAREFA_ITEM` (
   `TAR_CODIGO` int(11) NOT NULL,
-  `PEC_CODIGO` bigint(20) NOT NULL,
-  `PEC_QUANTIDADE` int(11) NOT NULL,
-  PRIMARY KEY (`TAR_CODIGO`,`PEC_CODIGO`),
-  KEY `PECA_TAREFA_PECA_FK` (`PEC_CODIGO`)
+  `ITE_CODIGO` bigint(20) NOT NULL,
+  `ITE_QUANTIDADE` int(11) NOT NULL,
+  PRIMARY KEY (`TAR_CODIGO`,`ITE_CODIGO`),
+  KEY `ITEM_TAREFA_ITEM_FK` (`ITE_CODIGO`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Extraindo dados da tabela `TAREFA_PECA`
+-- Extraindo dados da tabela `TAREFA_ITEM`
 --
 
-INSERT INTO `TAREFA_PECA` (`TAR_CODIGO`, `PEC_CODIGO`, `PEC_QUANTIDADE`) VALUES
+INSERT INTO `TAREFA_ITEM` (`TAR_CODIGO`, `ITE_CODIGO`, `ITE_QUANTIDADE`) VALUES
 (1, 1, 11);
 
 -- --------------------------------------------------------
@@ -857,33 +888,6 @@ INSERT INTO `TAREFA_USUARIO` (`TAR_CODIGO`, `USU_CODIGO`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `USUARIO`
---
-
-CREATE TABLE IF NOT EXISTS `USUARIO` (
-  `USU_CODIGO` bigint(20) NOT NULL AUTO_INCREMENT,
-  `EMP_CODIGO` bigint(20) NOT NULL,
-  `PER_CODIGO` bigint(20) NOT NULL,
-  `USU_LOGIN` varchar(50) NOT NULL,
-  `USU_NOME` varchar(100) NOT NULL,
-  `USU_SENHA` varchar(20) NOT NULL,
-  `USU_ATIVO` char(1) NOT NULL DEFAULT 'S',
-  PRIMARY KEY (`USU_CODIGO`),
-  UNIQUE KEY `USU_LOGIN` (`USU_LOGIN`) USING BTREE,
-  KEY `PERFIL_USUARIO_FK` (`PER_CODIGO`) USING BTREE,
-  KEY `EMPRESA_USUARIO_FK` (`EMP_CODIGO`) USING BTREE,
-  KEY `USU_ATIVO` (`USU_ATIVO`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
---
--- Extraindo dados da tabela `USUARIO`
---
-
-INSERT INTO `USUARIO` (`USU_CODIGO`, `EMP_CODIGO`, `PER_CODIGO`, `USU_LOGIN`, `USU_NOME`, `USU_SENHA`, `USU_ATIVO`) VALUES
-(1, 1, 2, 'luiz', 'Luiz OtÃ¡vio Dorigon', '123', 'S'),
-(2, 1, 3, 'pitoco', 'Pitoco', '123', 'S');
-
---
 -- Constraints for dumped tables
 --
 
@@ -932,11 +936,11 @@ ALTER TABLE `PAGINA`
   ADD CONSTRAINT `SUBMENU_PAGINA_FK` FOREIGN KEY (`SUB_CODIGO`) REFERENCES `SUBMENU` (`SUB_CODIGO`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Limitadores para a tabela `PRODUTO_PECA`
+-- Limitadores para a tabela `PRODUTO_ITEM`
 --
-ALTER TABLE `PRODUTO_PECA`
-  ADD CONSTRAINT `PECA_PRODUTO_PECA_PEC_CODIGO_PFK` FOREIGN KEY (`PEC_CODIGO`) REFERENCES `PECA` (`PEC_CODIGO`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `PRODUTO_PRODUTO_PECA_PRO_CODIGO_PFK` FOREIGN KEY (`PRO_CODIGO`) REFERENCES `PRODUTO` (`PRO_CODIGO`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `PRODUTO_ITEM`
+  ADD CONSTRAINT `ITEM_PRODUTO_ITEM_ITE_CODIGO_PFK` FOREIGN KEY (`ITE_CODIGO`) REFERENCES `ITEM` (`ITE_CODIGO`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `PRODUTO_PRODUTO_ITEM_PRO_CODIGO_PFK` FOREIGN KEY (`PRO_CODIGO`) REFERENCES `PRODUTO` (`PRO_CODIGO`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Limitadores para a tabela `SITUACAO`
@@ -951,11 +955,11 @@ ALTER TABLE `SUBMENU`
   ADD CONSTRAINT `SUBMENU_PAGINA_MEN_CODIGO_FK` FOREIGN KEY (`MEN_CODIGO`) REFERENCES `MENU` (`MEN_CODIGO`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Limitadores para a tabela `TAREFA_PECA`
+-- Limitadores para a tabela `TAREFA_ITEM`
 --
-ALTER TABLE `TAREFA_PECA`
-  ADD CONSTRAINT `PECA_TAREFA_PECA_FK` FOREIGN KEY (`PEC_CODIGO`) REFERENCES `PECA` (`PEC_CODIGO`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `TAREFA_TAR_PECA_FK` FOREIGN KEY (`TAR_CODIGO`) REFERENCES `TAREFA` (`TAR_CODIGO`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `TAREFA_ITEM`
+  ADD CONSTRAINT `ITEM_TAREFA_ITEM_FK` FOREIGN KEY (`ITE_CODIGO`) REFERENCES `ITEM` (`ITE_CODIGO`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `TAREFA_TAR_ITEM_FK` FOREIGN KEY (`TAR_CODIGO`) REFERENCES `TAREFA` (`TAR_CODIGO`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Limitadores para a tabela `TAREFA_PRODUTO`

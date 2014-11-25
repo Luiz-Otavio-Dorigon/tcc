@@ -27,7 +27,7 @@ class Crud extends Auxiliar {
                    
 		    $kkkkk = fPostGet($coluna)[$indice];
                     
-                    if(in_array($coluna,array("PEC_QUANTIDADE","PRO_QUANTIDADE"))) {
+                    if(in_array($coluna,array("ITE_QUANTIDADE","PRO_QUANTIDADE"))) {
                         $kkkkk = str_replace(',', '.', str_replace('.', '', $kkkkk));
                     }
                     

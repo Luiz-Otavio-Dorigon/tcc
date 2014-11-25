@@ -48,25 +48,25 @@ foreach ($CONEXAO->dadoBanco() as $TAREFA) {
         }
     }
     $CONEXAO->setSql("SELECT COUNT(*) AS total
-                        FROM TAREFA_PECA 
+                        FROM TAREFA_ITEM
                        WHERE TAR_CODIGO = " . get("tar_codigo") . "");
 
     if ($CONEXAO->dadoBanco()[0]['total'] > 0) {
-        $detalhesTarefa .= '<th colspan="6"> <h4 style="color: #3276b1" > Dados da(s) peça(s) <h4></th>';
+        $detalhesTarefa .= '<th colspan="6"> <h4 style="color: #3276b1" > Dados do(s) iten(s) <h4></th>';
 
         $CONEXAO->setSql("
-                SELECT PEC.PEC_NOME, TAP.PEC_QUANTIDADE
-                  FROM TAREFA_PECA TAP, ITEM PEC
+                SELECT ITE.ITE_NOME, TAP.ITE_QUANTIDADE
+                  FROM TAREFA_ITEM TAP, ITEM ITE
                  WHERE TAP.TAR_CODIGO = " . get("tar_codigo") . "
-                   AND TAP.PEC_CODIGO = PEC.PEC_CODIGO");
+                   AND TAP.ITE_CODIGO = ITE.ITE_CODIGO");
 
-        foreach ($CONEXAO->dadoBanco() as $PECAS) {
+        foreach ($CONEXAO->dadoBanco() as $ITENS) {
             $detalhesTarefa .= '
                 <tr>
-                    <td> <b> Descrição da peça </b> </td>
-                    <td> ' . $PECAS['PEC_NOME'] . ' </td>
+                    <td> <b> Descrição do item </b> </td>
+                    <td> ' . $ITENS['ITE_NOME'] . ' </td>
                     <td> <b> Quantia para produção </b> </td>
-                    <td> ' . $PECAS['PEC_QUANTIDADE'] . ' </td>
+                    <td> ' . $ITENS['ITE_QUANTIDADE'] . ' </td>
                     <td colspan="2"></td>
                 </tr>';
         }

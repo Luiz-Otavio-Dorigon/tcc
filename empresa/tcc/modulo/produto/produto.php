@@ -6,10 +6,10 @@ class Produto extends Crud {
         global $CONEXAO;
         parent::acaoFK();
 
-        //Acrescenta valor na tabela PRODUTO_PECA
-        foreach ($_POST["PEC_CODIGO"] as $codigo) {
-            $sql = sprintf("UPDATE PRODUTO_PECA SET PEC_VALORUNITARIO = (SELECT PEC_VALOR FROM ITEM WHERE PEC_CODIGO = %s)
-                             WHERE PEC_CODIGO = %s AND PRO_CODIGO = %s", $codigo, $codigo, fCoalesce($this->chaveValor, $this->getValorChave()));
+        //Acrescenta valor na tabela PRODUTO_ITEM
+        foreach ($_POST["ITE_CODIGO"] as $codigo) {
+            $sql = sprintf("UPDATE PRODUTO_ITEM SET ITE_VALORUNITARIO = (SELECT ITE_VALOR FROM ITEM WHERE ITE_CODIGO = %s)
+                             WHERE ITE_CODIGO = %s AND PRO_CODIGO = %s", $codigo, $codigo, fCoalesce($this->chaveValor, $this->getValorChave()));
             $CONEXAO->query($sql);
         }
         
@@ -31,12 +31,12 @@ class Produto extends Crud {
     public function iniciarCampos() {
         $this->setAtrForm("enctype='multipart/form-data'");
 
-        $this->setCampo("PEC_CODIGO[]", "Item", 100, "combo");
-        $this->setCombo("ITEM", "PEC_VALOR");
-        $this->setMulti("PRODUTO_PECA");
+        $this->setCampo("ITE_CODIGO[]", "Item", 100, "combo");
+        $this->setCombo("ITEM", "ITE_VALOR");
+        $this->setMulti("PRODUTO_ITEM");
 
-        $PEC_QUANTIDADE = new Campo("PEC_QUANTIDADE[]", "Quantidade", 100, "valor", false);
-        $this->this->setEspaco($this->tipoCampo($PEC_QUANTIDADE, "PRODUTO_PECA"));
+        $ITE_QUANTIDADE = new Campo("ITE_QUANTIDADE[]", "Quantidade", 100, "valor", false);
+        $this->this->setEspaco($this->tipoCampo($ITE_QUANTIDADE, "PRODUTO_ITEM"));
 
         $this->setCampo("PRO_PERCENTUAL", "Margem de Lucro %", 100, "valor", false, true);
 
@@ -91,12 +91,12 @@ class Produto extends Crud {
         //Percorre todos os elementos ativos de peça, depois verifica
         //se tem quantidade, e multiplica o valor da peça pela quantidade
         //E soma todas essas interações e coloca o total no campo valor
-        $('[name^=PEC_CODIGO] option:selected').each(function(i, e) {
-            var valorPeca = $(this).data("pec_valor");
-            if (valorPeca) {
-                var quantidadePeca = jValor($('[name^=PEC_QUANTIDADE]')[i].value, 'Q');
-                if (quantidadePeca) {
-                    total += valorPeca * quantidadePeca;
+        $('[name^=ITE_CODIGO] option:selected').each(function(i, e) {
+            var valorItem = $(this).data("ite_valor");
+            if (valorItem) {
+                var quantidadeItem = jValor($('[name^=ITE_QUANTIDADE]')[i].value, 'Q');
+                if (quantidadeItem) {
+                    total += valorItem * quantidadeItem;
                 }
             }
         });
