@@ -43,6 +43,8 @@ class Produto extends Crud {
         $this->setCampo("PRO_VALOR", "Valor", 100, "valor", true, true);
         $this->this->setVagabundo('<br /><input type="button" class="btn btn-primary" onclick="jTotalizaProduto()" value="Calcular">');
 
+        $this->setCampo("PRO_SEQPRODUCAO", "Sequência para produção", 1000, "memo");
+
         $this->setCampo("PRO_OBSERVACAO", "Observação", 1000, "memo");
         $this->this->setVagabundo('<br />
             <label>Selecionar Imagem</label>

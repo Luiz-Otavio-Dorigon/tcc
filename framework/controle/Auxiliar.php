@@ -145,24 +145,28 @@ class Auxiliar {
         
         if (get('pg') == "tarefa_listar") {
             $checkbpx = '
-                <form method="post">
+                <form method="post" name="form_tarefa">
                     <table>
                         <tr>
                             <td>
-                                <select class="form-control" name="opcao-tarefa">
-                                    <option value="">Todas</option>
-                                    <option value="= 6">Canceladas</option>
-                                    <option value="= 5">Concluídas</option>
-                                </select>
+                            <label>Situação:&nbsp</label>
                             </td>
-                            <td> 
-                                <input type="submit" class="btn btn-primary" name="listar" value="Listar"/>
+                            <td>
+                                <select class="form-control"  name="opcao-tarefa" onchange="form_tarefa.submit()"  >
+                                    <option value="">Todas</option>
+                                    <option %s value="= 6">Canceladas</option>
+                                    <option %s value="= 5">Concluídas</option>
+                                </select>
                             </td>
                         </tr>
                     </table>
                     <br />
                 </form>';
-            echo $checkbpx;
+         printf(
+                $checkbpx,
+                fSimNao($_POST["opcao-tarefa"] =='= 5' ,'selected="selected"'),
+                fSimNao($_POST["opcao-tarefa"] =='= 4' ,'selected="selected"')
+        );
         }
         $tag_listagem = '<table id="example" class="table table-striped">
                 <thead>

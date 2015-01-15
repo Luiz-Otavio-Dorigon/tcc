@@ -24,30 +24,6 @@ foreach ($CONEXAO->dadoBanco() as $TAREFA) {
             </tr>';
 
     $CONEXAO->setSql("SELECT COUNT(*) AS total
-                        FROM TAREFA_PRODUTO 
-                       WHERE TAR_CODIGO = " . get("tar_codigo") . "");
-
-    if ($CONEXAO->dadoBanco()[0]['total'] > 0) {
-        $detalhesTarefa .= '<th colspan="6"> <h4 style="color: #3276b1" > Dados do(s) produto(s) <h4> </th>';
-
-        $CONEXAO->setSql("
-                SELECT PRO.PRO_NOME, TAP.PRO_QUANTIDADE
-                  FROM TAREFA_PRODUTO TAP, PRODUTO PRO
-                 WHERE TAP.TAR_CODIGO = " . get("tar_codigo") . "
-                   AND TAP.PRO_CODIGO = PRO.PRO_CODIGO");
-
-        foreach ($CONEXAO->dadoBanco() as $PRODUTOS) {
-            $detalhesTarefa .= '
-                <tr>
-                    <td> <b> Descrição do produto </b> </td>
-                    <td> ' . $PRODUTOS['PRO_NOME'] . ' </td>
-                    <td> <b> Quantia para produção </b> </td>
-                    <td> ' . $PRODUTOS['PRO_QUANTIDADE'] . ' </td>
-                    <td colspan="2"></td>
-                </tr>';
-        }
-    }
-    $CONEXAO->setSql("SELECT COUNT(*) AS total
                         FROM TAREFA_ITEM
                        WHERE TAR_CODIGO = " . get("tar_codigo") . "");
 
@@ -71,6 +47,36 @@ foreach ($CONEXAO->dadoBanco() as $TAREFA) {
                 </tr>';
         }
     }
+    
+    $CONEXAO->setSql("SELECT COUNT(*) AS total
+                        FROM TAREFA_PRODUTO 
+                       WHERE TAR_CODIGO = " . get("tar_codigo") . "");
+
+    if ($CONEXAO->dadoBanco()[0]['total'] > 0) {
+        $detalhesTarefa .= '<th colspan="6"> <h4 style="color: #3276b1" > Dados do(s) produto(s) <h4> </th>';
+
+        $CONEXAO->setSql("
+                SELECT PRO.PRO_NOME, TAP.PRO_QUANTIDADE, PRO.PRO_SEQPRODUCAO
+                  FROM TAREFA_PRODUTO TAP, PRODUTO PRO
+                 WHERE TAP.TAR_CODIGO = " . get("tar_codigo") . "
+                   AND TAP.PRO_CODIGO = PRO.PRO_CODIGO");
+
+        foreach ($CONEXAO->dadoBanco() as $PRODUTOS) {
+            $detalhesTarefa .= '
+                <tr>
+                    <td> <b> Descrição do produto </b> </td>
+                    <td> ' . $PRODUTOS['PRO_NOME'] . ' </td>
+                    <td> <b> Quantia para produção </b> </td>
+                    <td> ' . $PRODUTOS['PRO_QUANTIDADE'] . ' </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td> <b> Sequência de produção </b> </td>
+                    <td colspan="5"> '. $PRODUTOS['PRO_SEQPRODUCAO'] .' </td>
+                </tr>';
+        }
+    }
+    
     $detalhesTarefa .= '<th colspan="6"> <h4 style="color: #3276b1" > Integrantes da equipe <h4></th>';
 
     $CONEXAO->setSql("

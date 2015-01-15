@@ -6,7 +6,7 @@ if ($_SERVER["HTTP_HOST"] == 'localhost') {
         $_SESSION["EMPRESA"]["ACESSO"] = 'empresa/'.strtolower($_SESSION["EMPRESA"]["CAMINHO"]);
     }
     if (!fVazio($_SESSION["EMPRESA"]["CAMINHO"])) {
-        $CONEXAO = new Conexao("localhost", "lod310893");
+        $CONEXAO = new Conexao("localhost", "");
           if(file_exists($DIR.'/'.$_SESSION["EMPRESA"]["ACESSO"].'/configuracao.php')){
               require_once $DIR.'/'.$_SESSION["EMPRESA"]["ACESSO"].'/configuracao.php';
           } else {

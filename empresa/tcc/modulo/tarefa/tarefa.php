@@ -22,10 +22,10 @@ class Tarefa extends Crud {
         $sqlTarefa = "
             GROUP BY TAR.TAR_CODIGO 
               HAVING TESTE %s";
-        if (!empty($_POST['listar'])) {
-            $this->sqlOrdem = sprintf($sqlTarefa, fCoalesce($_POST['opcao-tarefa'],"< 5"));
+        if (!empty($_POST['opcao-tarefa'])) {
+            $this->sqlOrdem = sprintf($sqlTarefa, fCoalesce($_POST['opcao-tarefa'],"< 6"));
         } else {
-            $this->sqlOrdem = sprintf($sqlTarefa, "< 5");
+            $this->sqlOrdem = sprintf($sqlTarefa, "< 6");
         }
         parent::__construct();
     }
@@ -47,12 +47,12 @@ class Tarefa extends Crud {
         $this->setCampo("TAR_DATAINICIO", "Data de início", 100, "data", true, true);
         $this->this->setValor(date("Y-m-d"));
         
-        $this->setCampo("ITE_CODIGO[]", "Item", 100, "combo", false, false);
-        $this->setCombo("ITEM");
-        $this->setMulti("TAREFA_ITEM");
-        
-        $ITE_QUANTIDADE = new Campo("ITE_QUANTIDADE[]", "Quantidade", 100, "valor");
-        $this->this->setEspaco($this->tipoCampo($ITE_QUANTIDADE, "TAREFA_ITEM"));
+//        $this->setCampo("ITE_CODIGO[]", "Item", 100, "combo", false, false);
+//        $this->setCombo("ITEM");
+//        $this->setMulti("TAREFA_ITEM");
+//        
+//        $ITE_QUANTIDADE = new Campo("ITE_QUANTIDADE[]", "Quantidade", 100, "valor");
+//        $this->this->setEspaco($this->tipoCampo($ITE_QUANTIDADE, "TAREFA_ITEM"));
         
         $this->setCampo("PRO_CODIGO[]", "Produto", 100, "combo", false, false);
         $this->setCombo("PRODUTO");
@@ -70,5 +70,5 @@ class Tarefa extends Crud {
             $this->setCombo("SITUACAO");
             $this->setMulti("TAREFA_SITUACAO");
         }
-    }
+   }
 }

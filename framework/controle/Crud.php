@@ -1,5 +1,7 @@
 <?php
 
+$conn = mysqli_connect("çocalhost", "root", "", "TCC");
+
 require_once $DIR.'/framework/formulario/Campo.php';
 require_once $DIR.'/framework/controle/Auxiliar.php';
 
@@ -8,8 +10,11 @@ class Crud extends Auxiliar {
     protected $nomeProduto;
 
     public function acaoFK() {
+//        $PRODUTOS = array();
+//        foreach ($_POST["PRO_CODIGO"] as $key => $value) {
+//            $PRODUTOS["CODIGO"][$key] = $value;
+//        }
         foreach ($this->multi as $tabela => $chave) {
-            
             $DADOS = array();
             $DADOS[$this->chave] = fCoalesce($this->chaveValor, $this->getValorChave());
             
@@ -24,14 +29,27 @@ class Crud extends Auxiliar {
             //pega a quantidade de multis para assumir para o foreach
             foreach(fPostGet($COLUNAS[0]) as $indice => $valor) {
                 foreach($COLUNAS as $coluna) {
-                   
 		    $kkkkk = fPostGet($coluna)[$indice];
-                    
                     if(in_array($coluna,array("ITE_QUANTIDADE","PRO_QUANTIDADE"))) {
                         $kkkkk = str_replace(',', '.', str_replace('.', '', $kkkkk));
                     }
-                    
                     $DADOS[$coluna] = $kkkkk;
+                }
+                for ($i = 0; $i < count($DADOS["PRO_CODIGO"]); $i++) {
+                    $this->setSql("SELECT * FROM PRODUTO_ITEM WHERE PRO_CODIGO = {$DADOS["PRO_CODIGO"]} ");
+                    foreach ($this->consulta() as $value) {
+                        $quantidade_peca = floatval($_POST["PRO_QUANTIDADE"][$indice]) * floatval($value["ITE_QUANTIDADE"]);
+                        $this->setSql("SELECT * FROM TAREFA_ITEM WHERE TAR_CODIGO = {$DADOS["TAR_CODIGO"]} AND ITE_CODIGO = {$value["ITE_CODIGO"]} ");
+                        foreach ($this->consulta() as $ITENS) {
+                            if ($ITENS != null) {
+                                $quantidade_peca = $quantidade_peca + $ITENS["ITE_QUANTIDADE"];
+                                $this->setSql("DELETE FROM TAREFA_ITEM WHERE TAR_CODIGO = {$DADOS["TAR_CODIGO"]} AND ITE_CODIGO = {$value["ITE_CODIGO"]} ");
+                                $this->consulta();
+                            }
+                        }
+                        $this->setSql("INSERT INTO TAREFA_ITEM (TAR_CODIGO, ITE_CODIGO, ITE_QUANTIDADE) VALUES ({$DADOS["TAR_CODIGO"]}, {$value["ITE_CODIGO"]}, $quantidade_peca)");
+                        $this->consulta();
+                    }
                 }
                 $this->inserir($tabela, $DADOS);
             }

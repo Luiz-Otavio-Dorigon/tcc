@@ -36,7 +36,8 @@ $CONEXAO->setSql("SELECT * FROM MENU M, PAGINA P
                     WHERE P.MEN_CODIGO = M.MEN_CODIGO 
                     AND P.PAG_ORDEM = 1 
                     AND M.MEN_ATIVO = 'S' 
-                    AND P.PAG_ATIVO = 'S' 
+                    AND P.PAG_ATIVO = 'S' ".
+                    fSimNao(fAdministrador(), "", " AND P.PER_CODIGO = 3")."
                     ORDER BY M.MEN_ORDEM");
             foreach ($CONEXAO->dadoBanco() as $MENU){
                 $CONEXAO->setSql("SELECT * FROM SUBMENU S, PAGINA P 
