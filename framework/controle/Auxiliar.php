@@ -30,7 +30,9 @@ class Auxiliar {
         
         $this->sqlCondicao = fCoalesce($this->sqlCondicao, fSimNao(!$this->sqlConsulta," ","  AND ")  .$this->apelido . "_ATIVO = " . fSimNao(fIsPagina($this->modulo . '_lixeira'), "'N'", "'S'"));
         
-        $this->sqlConsulta = fCoalesce( fSimNao($this->sqlConsulta, $this->sqlConsulta .$this->sqlCondicao), "SELECT * FROM ".strtoupper($this->modulo)." WHERE $this->sqlCondicao");
+         $this->sqlOrdem = "ORDER BY $this->apelido"."_NOME";
+        
+        $this->sqlConsulta = fCoalesce( fSimNao($this->sqlConsulta, $this->sqlConsulta .$this->sqlCondicao), "SELECT * FROM ".strtoupper($this->modulo)." WHERE $this->sqlCondicao ");
 //        $this->sqlConsulta = fCoalesce( fSimNao($this->sqlConsulta, $this->sqlConsulta .$this->sqlCondicao), "SELECT * FROM '".strtoupper($this->modulo)."' `$this->apelido` WHERE $this->sqlCondicao");
         $this->sqlConsulta .= " " . $this->sqlOrdem;
 
@@ -164,8 +166,8 @@ class Auxiliar {
                 </form>';
          printf(
                 $checkbpx,
-                fSimNao($_POST["opcao-tarefa"] =='= 5' ,'selected="selected"'),
-                fSimNao($_POST["opcao-tarefa"] =='= 4' ,'selected="selected"')
+                fSimNao($_POST["opcao-tarefa"] =='= 6' ,'selected="selected"'),
+                fSimNao($_POST["opcao-tarefa"] =='= 5' ,'selected="selected"')
         );
         }
         $tag_listagem = '<table id="example" class="table table-striped">
